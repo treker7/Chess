@@ -12,12 +12,13 @@ namespace GUI
 {
     public partial class Form1 : Form
     {
-        private const int BOARD_LENGTH = 600;
-
         public Form1()
         {
             InitializeComponent();
-            this.ClientSize = new Size(BOARD_LENGTH, BOARD_LENGTH + menuStrip1.Height);
+            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height);
+
+            chessBoard1.PutPiece(new Piece(false, "k"), new Square(5, 5));
+            chessBoard1.DoMove(new Square(5, 5), new Square(1, 1));
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
