@@ -23,16 +23,59 @@ namespace GUI
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
 
+        public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         private Piece[,] board = new Piece[8,8];
 
         public ChessBoard()
         {
             InitializeComponent();
+            SetBoard(START_FEN);
         }
 
-        public void PutPiece(Piece piece, Square square)
+        public void SetBoard(string fenStr)
         {
-            board[square.Row, square.Col] = piece;
+            string[] sections = fenStr.Split(null);
+            if (sections.Length < 4 || sections.Length > 6)
+                throw new ArgumentException("Bad number of sections in fen string.");
+
+            string piecePositions = sections[0];
+            string toMove = sections[1];
+            string castlingAvailability = sections[2];
+            string enPassantSquare = sections[3];
+
+            if (piecePositions.Count(f => f == '/') != 7)
+                throw new ArgumentException("Bad number of slaches in fen string.");
+            if((piecePositions.Count(f => f == 'k') != 1) || (piecePositions.Count(f => f == 'K') != 1))
+                throw new ArgumentException("Must have one white king and one black king in fen string.");
+
+            int row = 0, col = 0;
+            foreach(char symbol in piecePositions)
+            {
+                if (Char.IsDigit(symbol))
+                    col += (symbol - '0');
+                else
+                {
+                    switch (Char.ToLower(symbol))
+                    {
+                        case 'p':
+                        case 'n':
+                        case 'b':
+                        case 'r':
+                        case 'q':
+                        case 'k':
+                            board[row, col] = new Piece(Char.IsUpper(symbol), symbol);
+                            col++;
+                            break;
+                        case '/':
+                            row++;
+                            col = 0;
+                            break;
+                        default:
+                            throw new ArgumentException("Unkown character in fen string: " + symbol);
+                    }
+                }
+            }
+            this.Refresh();
         }
 
         public void DoMove(Square s1, Square s2)
