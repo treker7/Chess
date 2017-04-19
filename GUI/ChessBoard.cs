@@ -24,7 +24,7 @@ namespace GUI
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
 
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        private Piece[,] board = new Piece[8,8];
+        private Piece[,] board;
 
         public ChessBoard()
         {
@@ -48,6 +48,7 @@ namespace GUI
             if((piecePositions.Count(f => f == 'k') != 1) || (piecePositions.Count(f => f == 'K') != 1))
                 throw new ArgumentException("Must have one white king and one black king in fen string.");
 
+            board = new Piece[8, 8];
             int row = 0, col = 0;
             foreach(char symbol in piecePositions)
             {
