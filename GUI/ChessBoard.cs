@@ -13,8 +13,9 @@ namespace GUI
     public partial class ChessBoard : Panel
     {
         private int boardLength = 600;
-        public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Refresh(); } }
+        public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Invalidate(); } }
         public const int BOARD_SIZE = 8;
+        public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
         private readonly Font pieceFont = new Font("Arial Unicode MS", 42);
         private readonly Color blackSquare = Color.FromArgb(150, 150, 150);
@@ -22,13 +23,18 @@ namespace GUI
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
 
-        public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        
         private Piece[,] board = new Piece[8, 8];
         private Piece movingPiece;
+        private Point movingPiecePos;
 
         public ChessBoard()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
+            this.MouseDown += new MouseEventHandler(this.chessBoard1_MouseDown);
+            this.MouseMove += new MouseEventHandler(this.chessBoard1_MouseMove);
+            this.MouseUp += new MouseEventHandler(this.chessBoard1_MouseUp);
             SetBoard(START_FEN);
         }
 
@@ -79,11 +85,12 @@ namespace GUI
             board = newBoard;
             this.Refresh();
         }
-
+                
         public void DoMove(Square s1, Square s2)
         {
             board[s2.Row, s2.Col] = board[s1.Row, s1.Col];
             board[s1.Row, s1.Col] = null;
+            this.Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -125,6 +132,45 @@ namespace GUI
                         graphics.DrawString(currPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);
                     }
                 }
+            }
+            if (movingPiece != null) // draw the moving piece
+            {
+                SolidBrush drawingBrush = movingPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
+                Point drawingPoint = new Point(movingPiecePos.X - 35, movingPiecePos.Y - 35);
+                graphics.DrawString(movingPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);               
+            }                
+        }
+
+        private void chessBoard1_MouseDown(object sender, MouseEventArgs e)
+        {
+            int squareSize = (BoardLength / BOARD_SIZE);
+            Square location1 = new Square(e.Y / squareSize, e.X / squareSize);
+
+            movingPiecePos = new Point(e.X, e.Y);
+            movingPiece = board[location1.Row, location1.Col];
+            board[location1.Row, location1.Col] = null;
+            this.Invalidate();
+        }
+
+        private void chessBoard1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (movingPiece != null)
+            {
+                movingPiecePos = new Point(e.X, e.Y);
+                this.Invalidate();
+            }
+        }
+
+        private void chessBoard1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (movingPiece != null)
+            {
+                int squareSize = (BoardLength / BOARD_SIZE);
+                Square location2 = new Square(e.Y / squareSize, e.X / squareSize);
+
+                board[location2.Row, location2.Col] = movingPiece;
+                movingPiece = null;
+                this.Invalidate();
             }
         }
     }
