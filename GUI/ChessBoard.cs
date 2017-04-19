@@ -14,17 +14,17 @@ namespace GUI
     {
         private int boardLength = 600;
         public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Refresh(); } }
+        public const int BOARD_SIZE = 8;
 
-        private const int BOARD_SIZE = 8;
         private readonly Font pieceFont = new Font("Arial Unicode MS", 42);
-
         private readonly Color blackSquare = Color.FromArgb(150, 150, 150);
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
 
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        private Piece[,] board;
+        private Piece[,] board = new Piece[8, 8];
+        private Piece movingPiece;
 
         public ChessBoard()
         {
@@ -48,7 +48,7 @@ namespace GUI
             if((piecePositions.Count(f => f == 'k') != 1) || (piecePositions.Count(f => f == 'K') != 1))
                 throw new ArgumentException("Must have one white king and one black king in fen string.");
 
-            board = new Piece[8, 8];
+            Piece[,] newBoard = new Piece[8, 8];
             int row = 0, col = 0;
             foreach(char symbol in piecePositions)
             {
@@ -64,7 +64,7 @@ namespace GUI
                         case 'r':
                         case 'q':
                         case 'k':
-                            board[row, col] = new Piece(Char.IsUpper(symbol), symbol);
+                            newBoard[row, col] = new Piece(Char.IsUpper(symbol), symbol);
                             col++;
                             break;
                         case '/':
@@ -76,6 +76,7 @@ namespace GUI
                     }
                 }
             }
+            board = newBoard;
             this.Refresh();
         }
 

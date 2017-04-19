@@ -46,5 +46,17 @@ namespace GUI
         {
             this.Close();
         }
+
+        private void chessBoard1_MouseDown(object sender, MouseEventArgs e)
+        {
+            int squareSize = (chessBoard1.BoardLength / ChessBoard.BOARD_SIZE);
+            Square location = new Square(e.Y / squareSize, e.X / squareSize);
+            MessageBox.Show(String.Format("Location: ({0}, {1})", location.Row, location.Col));
+        }
+
+        private void chessBoard1_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
