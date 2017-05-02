@@ -94,10 +94,6 @@
       <Project>{d9623e89-fb18-486b-85f4-400f81357101}</Project>
       <Name>Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Prompt\Prompt.csproj">
-      <Project>{e3eaa252-e3be-4eb4-b7bb-918630dc8210}</Project>
-      <Name>Prompt</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

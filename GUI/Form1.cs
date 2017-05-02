@@ -7,15 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using Dialog;
 using System.IO;
+
 
 namespace GUI
 {
     public partial class Form1 : Form
     {
-        private Prompt fenPrompt = new Prompt("Enter FEN string.");
         SaveFileDialog saveFileDialog1 = new SaveFileDialog();
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
         private string fenFilter = "FEN Files|*.fen";
