@@ -30,9 +30,7 @@ namespace GUI
         private Piece movingPiece;
         private Point movingPiecePos;
 
-        private Board chessBoard = new Board();
-        public string Fen { get { return chessBoard.ToString(); } set { } }
-        public double Status { get { return chessBoard.eval(); } set { } }
+        private Board chessBoard = new Board();       
 
         public ChessBoard()
         {
@@ -47,6 +45,8 @@ namespace GUI
         public void SetBoard(string fenStr)
         {
             this.chessBoard = new Board(fenStr);
+            this.board = new Piece[8, 8];
+
             string piecePositions = fenStr.Split(null)[0];            
             
             int row = 0, col = 0;
@@ -141,8 +141,7 @@ namespace GUI
 
             movingPiecePos = new Point(e.X, e.Y);
             movingPiece = board[location1.Row, location1.Col];
-            board[location1.Row, location1.Col] = null;
-            
+            board[location1.Row, location1.Col] = null;            
             this.Invalidate();            
         }
 
@@ -166,6 +165,11 @@ namespace GUI
                 movingPiece = null;
                 this.Invalidate();
             }
+        }
+
+        public override string ToString()
+        {
+            return chessBoard.ToString();
         }
     }
 }

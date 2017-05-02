@@ -9,19 +9,30 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Dialog;
+using System.IO;
 
 namespace GUI
 {
     public partial class Form1 : Form
     {
         private Prompt fenPrompt = new Prompt("Enter FEN string.");
+        SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+        OpenFileDialog openFileDialog1 = new OpenFileDialog();
+        private string fenFilter = "FEN Files|*.fen";
 
         public Form1()
         {
             InitializeComponent();
-            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height + panel1.Height);
-            this.fenBox.DataBindings.Add("Text", chessBoard1, "Fen");
-            this.statusBox.DataBindings.Add("Text", chessBoard1, "Status");
+            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height);
+
+            saveFileDialog1.Filter = fenFilter;
+            saveFileDialog1.Title = "Save Game";
+            saveFileDialog1.FileName = "Game";
+            saveFileDialog1.RestoreDirectory = true;
+
+            openFileDialog1.Filter = fenFilter;
+            openFileDialog1.Title = "Open Game";
+            openFileDialog1.RestoreDirectory = true;
         }        
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -31,19 +42,37 @@ namespace GUI
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fenPrompt.ShowDialog();
-            if (fenPrompt.DialogResult == DialogResult.OK)
+            if(openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                FileStream fs = (FileStream)openFileDialog1.OpenFile();
+                string fenStr = (new StreamReader(fs)).ReadToEnd();
+
                 try
                 {
-                    chessBoard1.SetBoard(fenPrompt.Value);
+                    chessBoard1.SetBoard(fenStr);
                 }
-                catch(ArgumentException ex)
+                catch (ArgumentException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+                finally
+                {
+                    fs.Close();
+                }
+            }                       
+        }
+        
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = (FileStream)saveFileDialog1.OpenFile();
+                byte[] fen = new UTF8Encoding(true).GetBytes(chessBoard1.ToString());
+                fs.Write(fen, 0, fen.Length);
+                fs.Close();
             }
         }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
