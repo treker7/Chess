@@ -19,7 +19,9 @@ namespace GUI
         public Form1()
         {
             InitializeComponent();
-            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height);            
+            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height + panel1.Height);
+            this.fenBox.DataBindings.Add("Text", chessBoard1, "Fen");
+            this.statusBox.DataBindings.Add("Text", chessBoard1, "Status");
         }        
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -45,6 +47,6 @@ namespace GUI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
-        }               
+        }        
     }
 }

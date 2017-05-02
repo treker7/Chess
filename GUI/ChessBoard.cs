@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Engine;
+
 namespace GUI
 {
     public partial class ChessBoard : Panel
@@ -28,6 +30,10 @@ namespace GUI
         private Piece movingPiece;
         private Point movingPiecePos;
 
+        private Board chessBoard = new Board();
+        public string Fen { get { return chessBoard.ToString(); } set { } }
+        public double Status { get { return chessBoard.eval(); } set { } }
+
         public ChessBoard()
         {
             InitializeComponent();
@@ -35,26 +41,14 @@ namespace GUI
             this.MouseDown += new MouseEventHandler(this.chessBoard1_MouseDown);
             this.MouseMove += new MouseEventHandler(this.chessBoard1_MouseMove);
             this.MouseUp += new MouseEventHandler(this.chessBoard1_MouseUp);
-            SetBoard(START_FEN);
+            this.SetBoard(START_FEN);
         }
 
         public void SetBoard(string fenStr)
         {
-            string[] sections = fenStr.Split(null);
-            if (sections.Length < 4 || sections.Length > 6)
-                throw new ArgumentException("Bad number of sections in fen string.");
-
-            string piecePositions = sections[0];
-            string toMove = sections[1];
-            string castlingAvailability = sections[2];
-            string enPassantSquare = sections[3];
-
-            if (piecePositions.Count(f => f == '/') != 7)
-                throw new ArgumentException("Bad number of slaches in fen string.");
-            if((piecePositions.Count(f => f == 'k') != 1) || (piecePositions.Count(f => f == 'K') != 1))
-                throw new ArgumentException("Must have one white king and one black king in fen string.");
-
-            Piece[,] newBoard = new Piece[8, 8];
+            this.chessBoard = new Board(fenStr);
+            string piecePositions = fenStr.Split(null)[0];            
+            
             int row = 0, col = 0;
             foreach(char symbol in piecePositions)
             {
@@ -70,7 +64,7 @@ namespace GUI
                         case 'r':
                         case 'q':
                         case 'k':
-                            newBoard[row, col] = new Piece(Char.IsUpper(symbol), symbol);
+                            board[row, col] = new Piece(Char.IsUpper(symbol), symbol);
                             col++;
                             break;
                         case '/':
@@ -82,7 +76,6 @@ namespace GUI
                     }
                 }
             }
-            board = newBoard;
             this.Refresh();
         }
                 
@@ -138,7 +131,7 @@ namespace GUI
                 SolidBrush drawingBrush = movingPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
                 Point drawingPoint = new Point(movingPiecePos.X - 35, movingPiecePos.Y - 35);
                 graphics.DrawString(movingPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);               
-            }                
+            }
         }
 
         private void chessBoard1_MouseDown(object sender, MouseEventArgs e)
@@ -149,7 +142,8 @@ namespace GUI
             movingPiecePos = new Point(e.X, e.Y);
             movingPiece = board[location1.Row, location1.Col];
             board[location1.Row, location1.Col] = null;
-            this.Invalidate();
+            
+            this.Invalidate();            
         }
 
         private void chessBoard1_MouseMove(object sender, MouseEventArgs e)
