@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine
 {
-    internal abstract class Piece
+    internal abstract class Piece : ICloneable
     {
         public bool White { get; }
         public Square Position { get; }
@@ -16,6 +16,8 @@ namespace Engine
 
         public abstract double GetValue();
         public abstract List<Square> GetMoves();
-        public abstract override string ToString();
+
+        public abstract object Clone();
+        public abstract override string ToString();        
     }
 }

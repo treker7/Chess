@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Engine
 {
-    internal class Square
+    internal sealed class Square
     {
         public int File { get; }
         public int Row { get; }
@@ -24,7 +24,7 @@ namespace Engine
             int row = (7 - (pgn[1] - '0')) + 1;
 
             if ((row < 0) || (row > 7) || (col < 0) || (col > 7))
-                throw new ArgumentException("Invalid algebraic notatoin!");
+                throw new ArgumentException("Invalid algebraic notation!");
 
             this.File = row;
             this.Row = col;

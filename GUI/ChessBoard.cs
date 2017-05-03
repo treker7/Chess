@@ -70,9 +70,7 @@ namespace GUI
                         case '/':
                             row++;
                             col = 0;
-                            break;
-                        default:
-                            throw new ArgumentException("Unkown character in fen string: " + symbol);
+                            break;                       
                     }
                 }
             }
@@ -83,7 +81,7 @@ namespace GUI
         {
             board[s2.Row, s2.Col] = board[s1.Row, s1.Col];
             board[s1.Row, s1.Col] = null;
-            this.Invalidate();
+            this.Refresh();
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -142,7 +140,7 @@ namespace GUI
             movingPiecePos = new Point(e.X, e.Y);
             movingPiece = board[location1.Row, location1.Col];
             board[location1.Row, location1.Col] = null;            
-            this.Invalidate();            
+            this.Refresh();            
         }
 
         private void chessBoard1_MouseMove(object sender, MouseEventArgs e)
@@ -150,7 +148,7 @@ namespace GUI
             if (movingPiece != null)
             {
                 movingPiecePos = new Point(e.X, e.Y);
-                this.Invalidate();
+                this.Refresh();
             }
         }
 
@@ -163,7 +161,7 @@ namespace GUI
 
                 board[location2.Row, location2.Col] = movingPiece;
                 movingPiece = null;
-                this.Invalidate();
+                this.Refresh();
             }
         }
 

@@ -49,7 +49,7 @@ namespace GUI
                 {
                     chessBoard1.SetBoard(fenStr);
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }

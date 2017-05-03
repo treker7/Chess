@@ -21,6 +21,11 @@ namespace Engine.Pieces
             throw new NotImplementedException();
         }
 
+        public override object Clone()
+        {
+            return new Pawn(this.White, this.Position);
+        }
+
         public override string ToString()
         {
             return (this.White ? "P" : "p");
