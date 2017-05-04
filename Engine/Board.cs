@@ -165,10 +165,18 @@ namespace Engine
             this.enPassantSquare = other.enPassantSquare;
         }
 
+        public Board Move(Square from, Square to)
+        {
+            Board copyBoard = new Board(this);            
+            copyBoard.board[to.Rank, to.File] = (copyBoard.board[from.Rank, from.File]).MoveTo(to);
+            copyBoard.board[from.Rank, from.File] = null;
+            return copyBoard;
+        }
+
         internal Piece GetPiece(int rank, int file)
         {
             return board[rank, file];
-        }
+        }        
 
         /*
          * The symmetric board evaluation function from white's perspective
@@ -183,6 +191,22 @@ namespace Engine
             return eval;
         }
 
+        // ASCII representation of chess board
+        public string ToString2()
+        {
+            string ret = "";
+            for (int rank = 7; rank > -1; rank--)
+            {
+                for (int file = 0; file < 8; file++)
+                {
+                    ret += "[" + ((board[rank, file] == null) ? " " : board[rank, file].ToString()) + "]";
+                }
+                ret += "\n";
+            }
+            return ret;
+        }
+
+        // fen string representation of board
         public override string ToString()
         {
             string fen = "";

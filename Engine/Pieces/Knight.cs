@@ -16,6 +16,11 @@ namespace Engine.Pieces
             return Knight.VALUE;
         }
 
+        public override Piece MoveTo(Square to)
+        {
+            return new Knight(this.White, to);
+        }
+
         public override List<Square> GetAttacks(Board board)
         {
             List<Square> attacks = new List<Square>();

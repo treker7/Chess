@@ -16,6 +16,11 @@ namespace Engine.Pieces
             return Bishop.VALUE;
         }
 
+        public override Piece MoveTo(Square to)
+        {
+            return new Bishop(this.White, to);
+        }
+
         public override List<Square> GetAttacks(Board board)
         {
             int[,] transVec = { { +1, +1 }, { +1, -1 }, { -1, +1 }, { -1, -1 } };

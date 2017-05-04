@@ -16,6 +16,11 @@ namespace Engine.Pieces
             return Queen.VALUE;
         }
 
+        public override Piece MoveTo(Square to)
+        {
+            return new Queen(this.White, to);
+        }
+
         public override List<Square> GetAttacks(Board board)
         {
             int[,] transVec = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { +1, +1 }, { +1, -1 }, { -1, +1 }, { -1, -1 } };

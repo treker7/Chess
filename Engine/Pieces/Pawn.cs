@@ -16,6 +16,11 @@ namespace Engine.Pieces
             return Pawn.VALUE;
         }
 
+        public override Piece MoveTo(Square to)
+        {
+            return new Pawn(this.White, to);
+        }
+
         public override List<Square> GetAttacks(Board board)
         {
             List<Square> attacks = new List<Square>();

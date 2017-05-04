@@ -16,6 +16,7 @@ namespace Engine
         }
 
         public abstract double GetValue();
+        public abstract Piece MoveTo(Square to);
         public abstract List<Square> GetAttacks(Board board);
         public abstract override string ToString();
 
