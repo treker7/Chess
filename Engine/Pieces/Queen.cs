@@ -18,12 +18,8 @@ namespace Engine.Pieces
 
         public override List<Square> GetAttacks(Board board)
         {
-            List<Square> attacks = new List<Square>();           
-
-            attacks.AddRange((new Rook(this.White, this.Position)).GetAttacks(board));
-            attacks.AddRange((new Bishop(this.White, this.Position)).GetAttacks(board));
-
-            return attacks;
+            int[,] transVec = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { +1, +1 }, { +1, -1 }, { -1, +1 }, { -1, -1 } };
+            return base.GetSliderAttacks(board, transVec);
         }
 
         public override object Clone()

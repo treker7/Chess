@@ -14,11 +14,11 @@ namespace GUI
 {
     public partial class ChessBoard : Panel
     {
-        private int boardLength = 600;
-        public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Invalidate(); } }
         public const int BOARD_SIZE = 8;
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
-
+        private int boardLength = 600;
+        public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Invalidate(); } }
+        
         private readonly Font pieceFont = new Font("Arial Unicode MS", 42);
         private readonly Color blackSquare = Color.FromArgb(150, 150, 150);
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
@@ -26,7 +26,7 @@ namespace GUI
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
         private bool flipped = false; // is the board turned around (i.e. the user is playing as black?)
         
-        private Piece[,] board = new Piece[8, 8];
+        private Piece[,] drawBoard = new Piece[8, 8];
         private Piece movingPiece;
         private Point movingPiecePos;
 
@@ -45,7 +45,7 @@ namespace GUI
         public void SetBoard(string fenStr)
         {
             this.chessBoard = new Board(fenStr);
-            this.board = new Piece[8, 8];
+            this.drawBoard = new Piece[8, 8];
 
             string piecePositions = fenStr.Split(null)[0];            
             
@@ -64,7 +64,7 @@ namespace GUI
                         case 'r':
                         case 'q':
                         case 'k':
-                            board[row, col] = new Piece(Char.IsUpper(symbol), symbol);
+                            drawBoard[row, col] = new Piece(Char.IsUpper(symbol), symbol);
                             col++;
                             break;
                         case '/':
@@ -79,8 +79,8 @@ namespace GUI
                 
         public void DoMove(Square s1, Square s2)
         {
-            board[s2.Row, s2.Col] = board[s1.Row, s1.Col];
-            board[s1.Row, s1.Col] = null;
+            drawBoard[s2.Row, s2.Col] = drawBoard[s1.Row, s1.Col];
+            drawBoard[s1.Row, s1.Col] = null;
             this.Refresh();
         }
 
@@ -115,7 +115,7 @@ namespace GUI
             {
                 for (int col = 0; col < BOARD_SIZE; col++)
                 {
-                    currPiece = board[row, col];
+                    currPiece = drawBoard[row, col];
                     if (currPiece != null)
                     {
                         SolidBrush drawingBrush = currPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
@@ -138,8 +138,8 @@ namespace GUI
             Square location1 = new Square(e.Y / squareSize, e.X / squareSize);
 
             movingPiecePos = new Point(e.X, e.Y);
-            movingPiece = board[location1.Row, location1.Col];
-            board[location1.Row, location1.Col] = null;            
+            movingPiece = drawBoard[location1.Row, location1.Col];
+            drawBoard[location1.Row, location1.Col] = null;            
             this.Refresh();            
         }
 
@@ -159,7 +159,7 @@ namespace GUI
                 int squareSize = (BoardLength / BOARD_SIZE);
                 Square location2 = new Square(e.Y / squareSize, e.X / squareSize);
 
-                board[location2.Row, location2.Col] = movingPiece;
+                drawBoard[location2.Row, location2.Col] = movingPiece;
                 movingPiece = null;
                 this.Refresh();
             }
