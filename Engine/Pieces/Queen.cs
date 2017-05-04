@@ -21,12 +21,7 @@ namespace Engine.Pieces
             int[,] transVec = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { +1, +1 }, { +1, -1 }, { -1, +1 }, { -1, -1 } };
             return base.GetSliderAttacks(board, transVec);
         }
-
-        public override object Clone()
-        {
-            return new Queen(this.White, this.Position);
-        }
-
+        
         public override string ToString()
         {
             return (this.White ? "Q" : "q");

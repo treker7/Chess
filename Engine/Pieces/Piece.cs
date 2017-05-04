@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Engine
 {
     // IMMUTABLE CLASS
-    internal abstract class Piece : ICloneable
+    internal abstract class Piece
     {
         public Square Position { get; }
         public bool White { get; }        
@@ -17,8 +17,6 @@ namespace Engine
 
         public abstract double GetValue();
         public abstract List<Square> GetAttacks(Board board);
-
-        public abstract object Clone();
         public abstract override string ToString();
 
         // returns the attacks of a sliding piece (i.e. a rook, bishop, or queen) given movement direction vectors

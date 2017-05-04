@@ -149,7 +149,7 @@ namespace Engine
             {
                 for(int file = 0; file < 8; file++)
                 {
-                    this.board[rank, file] = (Piece)(other.board[rank, file].Clone());
+                    this.board[rank, file] = (Piece)other.board[rank, file];
                     this.pieces.Add(board[rank, file]);
                     if(board[rank, file] is King)
                     {
@@ -167,7 +167,7 @@ namespace Engine
 
         internal Piece GetPiece(int rank, int file)
         {
-            return (board[rank, file] != null) ? (Piece)(board[rank, file].Clone()) : null;
+            return board[rank, file];
         }
 
         /*

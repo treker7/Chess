@@ -36,11 +36,6 @@ namespace Engine.Pieces
             return attacks;
         }
 
-        public override object Clone()
-        {
-            return new Knight(this.White, this.Position);
-        }
-
         public override string ToString()
         {
             return (this.White ? "N" : "n");
