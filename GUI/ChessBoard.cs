@@ -17,20 +17,20 @@ namespace GUI
         private int boardLength = 600;
         public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Invalidate(); } }
         public const int BOARD_SIZE = 8;
-        public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
 
         private readonly Font pieceFont = new Font("Arial Unicode MS", 42);
         private readonly Color blackSquare = Color.FromArgb(150, 150, 150);
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
-
+        private bool flipped = false; // is the board turned around (i.e. the user is playing as black?)
         
         private Piece[,] board = new Piece[8, 8];
         private Piece movingPiece;
         private Point movingPiecePos;
 
-        private Board chessBoard = new Board();       
+        private Board chessBoard;     
 
         public ChessBoard()
         {
@@ -119,7 +119,7 @@ namespace GUI
                     if (currPiece != null)
                     {
                         SolidBrush drawingBrush = currPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
-                        Point drawingPoint = new Point(col * squareSize, row * squareSize - 5);
+                        Point drawingPoint = flipped ? new Point((7 - col) * squareSize, (7 - row) * squareSize - 5) : new Point(col * squareSize, row * squareSize - 5);
                         graphics.DrawString(currPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);
                     }
                 }

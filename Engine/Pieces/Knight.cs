@@ -16,9 +16,24 @@ namespace Engine.Pieces
             return Knight.VALUE;
         }
 
-        public override List<Square> GetMoves()
+        public override List<Square> GetAttacks(Board board)
         {
-            throw new NotImplementedException();
+            List<Square> attacks = new List<Square>();
+            char rank = this.Position.Rank;
+            char file = this.Position.File;
+
+            int[,] deltas = { { +2, +1 }, { +2, -1 }, { -2, +1 }, { -2, -1 }, { +1, +2 }, { +1, -2 }, { -1, +2 }, { -1, -2 } };
+
+            for(int d = 0; d < deltas.Length; d++)
+            {
+                char testRank = (char)deltas[d, 0];
+                char testFile = (char)deltas[d, 1];
+                if (Square.IsInRange(testRank, testFile) && ((board.GetPiece(testRank, testFile) == null) || (this.White != board.GetPiece(testRank, testFile).White)))
+                {
+                    attacks.Add(new Square(testRank, testFile));
+                }
+            }
+            return attacks;
         }
 
         public override object Clone()

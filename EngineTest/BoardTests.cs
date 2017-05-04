@@ -13,14 +13,14 @@ namespace Engine.Tests
     {
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
-        public void BoardTest()
+        public void BoardTest1()
         {
             Board failBoard = new Board("rnbnkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNZ w KQkq -");
         }
 
         [TestMethod()]
         [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void BoardTest1()
+        public void BoardTest2()
         {
             Board failBoard = new Board("rnbqkbnr/ppppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
         }

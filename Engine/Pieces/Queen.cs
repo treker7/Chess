@@ -16,9 +16,14 @@ namespace Engine.Pieces
             return Queen.VALUE;
         }
 
-        public override List<Square> GetMoves()
+        public override List<Square> GetAttacks(Board board)
         {
-            throw new NotImplementedException();
+            List<Square> attacks = new List<Square>();           
+
+            attacks.AddRange((new Rook(this.White, this.Position)).GetAttacks(board));
+            attacks.AddRange((new Bishop(this.White, this.Position)).GetAttacks(board));
+
+            return attacks;
         }
 
         public override object Clone()

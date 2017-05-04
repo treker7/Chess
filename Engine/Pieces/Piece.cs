@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Engine
 {
+    // IMMUTABLE CLASS
     internal abstract class Piece : ICloneable
     {
-        public bool White { get; }
         public Square Position { get; }
+        public bool White { get; }        
 
         public Piece(bool white, Square position)
         {
@@ -15,9 +16,9 @@ namespace Engine
         }
 
         public abstract double GetValue();
-        public abstract List<Square> GetMoves();
+        public abstract List<Square> GetAttacks(Board board);
 
         public abstract object Clone();
-        public abstract override string ToString();        
+        public abstract override string ToString();
     }
 }
