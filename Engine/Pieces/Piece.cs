@@ -25,14 +25,14 @@ namespace Engine
         {
             List<Square> attacks = new List<Square>();
 
-            for (int i = 0; i < transVec.Length; i++)
+            for (int i = 0; i < transVec.GetLength(0); i++)
             {
                 int t = 1;
                 bool blocked = false;
-                char testRank = (char)(this.Position.Rank + (transVec[i, 0] * t));
-                char testFile = (char)(this.Position.File + (transVec[i, 1] * t));
+                sbyte testRank = (sbyte)(this.Position.Rank + (transVec[i, 0] * t));
+                sbyte testFile = (sbyte)(this.Position.File + (transVec[i, 1] * t));
                 while (Square.IsInRange(testRank, testFile) && !blocked)
-                {
+                {                    
                     Piece other = board.GetPiece(testRank, testFile);
                     if (other == null)
                     {
@@ -48,6 +48,8 @@ namespace Engine
                         blocked = true;
                     }
                     t++;
+                    testRank = (sbyte)(this.Position.Rank + (transVec[i, 0] * t));
+                    testFile = (sbyte)(this.Position.File + (transVec[i, 1] * t));
                 }
             }
             return attacks;

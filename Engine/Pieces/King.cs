@@ -24,8 +24,8 @@ namespace Engine.Pieces
         public override List<Square> GetAttacks(Board board)
         {
             List<Square> attacks = new List<Square>();
-            char rank = this.Position.Rank;
-            char file = this.Position.File;
+            sbyte rank = this.Position.Rank;
+            sbyte file = this.Position.File;
             
             for (int x = 0; x < 3; x++)
             {
@@ -33,8 +33,8 @@ namespace Engine.Pieces
                 {
                     if (!((x == 1) && (y == 1)))
                     {
-                        char newRank = (char)(rank + (x - 1));
-                        char newFile = (char)(file + (y - 1));
+                        sbyte newRank = (sbyte)(rank + (x - 1));
+                        sbyte newFile = (sbyte)(file + (y - 1));
 
                         if (Square.IsInRange(newRank, newFile) && ((board.GetPiece(newRank, newFile) == null) || (this.White != board.GetPiece(newRank, newFile).White)))
                         {

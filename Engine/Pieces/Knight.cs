@@ -24,15 +24,15 @@ namespace Engine.Pieces
         public override List<Square> GetAttacks(Board board)
         {
             List<Square> attacks = new List<Square>();
-            char rank = this.Position.Rank;
-            char file = this.Position.File;
+            sbyte rank = this.Position.Rank;
+            sbyte file = this.Position.File;
 
-            int[,] deltas = { { +2, +1 }, { +2, -1 }, { -2, +1 }, { -2, -1 }, { +1, +2 }, { +1, -2 }, { -1, +2 }, { -1, -2 } };
+            sbyte[,] deltas = { { +2, +1 }, { +2, -1 }, { -2, +1 }, { -2, -1 }, { +1, +2 }, { +1, -2 }, { -1, +2 }, { -1, -2 } };
 
-            for(int d = 0; d < deltas.Length; d++)
+            for(int d = 0; d < deltas.GetLength(0); d++)
             {
-                char testRank = (char)deltas[d, 0];
-                char testFile = (char)deltas[d, 1];
+                sbyte testRank = deltas[d, 0];
+                sbyte testFile = deltas[d, 1];
                 if (Square.IsInRange(testRank, testFile) && ((board.GetPiece(testRank, testFile) == null) || (this.White != board.GetPiece(testRank, testFile).White)))
                 {
                     attacks.Add(new Square(testRank, testFile));

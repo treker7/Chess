@@ -39,11 +39,11 @@ namespace Engine
             if ((piecePositions.Count(f => f == 'k') != 1) || (piecePositions.Count(f => f == 'K') != 1))
                 throw new ArgumentException("Must have one white king and one black king in fen string.");
 
-            char rank = (char)7, file = (char)0;
+            sbyte rank = 7, file = 0;
             foreach (char symbol in piecePositions)
             {
                 if (Char.IsDigit(symbol))
-                    file += (char)(symbol - '0');
+                    file += (sbyte)(symbol - '0');
                 else
                 {
                     switch (Char.ToLower(symbol))
@@ -84,7 +84,7 @@ namespace Engine
                             break;
                         case '/':
                             rank--;
-                            file = (char)0;
+                            file = 0;
                             break;
                         default:
                             throw new ArgumentException("Unknown character in piece positions section of fen string: " + symbol);
@@ -153,7 +153,7 @@ namespace Engine
                     this.pieces.Add(board[rank, file]);
                     if(board[rank, file] is King)
                     {
-                        if (board.ToString() == "K")
+                        if (board[rank, file].White)
                             this.whiteKing = (King)board[rank, file];
                         else
                             this.blackKing = (King)board[rank, file];
@@ -171,12 +171,7 @@ namespace Engine
             copyBoard.board[to.Rank, to.File] = (copyBoard.board[from.Rank, from.File]).MoveTo(to);
             copyBoard.board[from.Rank, from.File] = null;
             return copyBoard;
-        }
-
-        internal Piece GetPiece(int rank, int file)
-        {
-            return board[rank, file];
-        }        
+        }               
 
         /*
          * The symmetric board evaluation function from white's perspective
@@ -184,11 +179,47 @@ namespace Engine
         public double Eval()
         {
             double eval = 0.0;
-            foreach(Piece piece in pieces)
+            foreach (Piece piece in pieces)
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
             return eval;
+        }
+
+        internal Piece GetPiece(int rank, int file)
+        {
+            return board[rank, file];
+        }
+
+        internal Piece GetKingOfSide(bool isWhiteSide)
+        {
+            return (isWhiteSide ? whiteKing : blackKing);
+        }
+
+        internal List<Piece> GetPiecesOfSide(bool isWhiteSide)
+        {
+            List<Piece> piecesOfSide = new List<Piece>();
+            foreach (Piece piece in this.pieces)
+            {
+                if (piece.White == isWhiteSide)
+                    piecesOfSide.Add(piece);
+            }
+            return piecesOfSide;
+        }
+
+        internal List<Square> GetAttacksOfSide(bool isWhiteSide)
+        {
+            List<Square> attacksOfSide = new List<Square>();
+            foreach (Piece piece in GetPiecesOfSide(isWhiteSide))
+            {
+                attacksOfSide.AddRange(piece.GetAttacks(this));
+            }
+            return attacksOfSide;
+        }
+
+        public bool IsInCheck(bool isWhiteSide)
+        {
+            return GetAttacksOfSide(!isWhiteSide).Contains(GetKingOfSide(isWhiteSide).Position);
         }
 
         // ASCII representation of chess board
@@ -218,8 +249,8 @@ namespace Engine
                     if(board[rank, file] == null)
                     {
                         fileSkips++;
-                        if (fileSkips == 7)
-                            fen += "8";
+                        if (file == 7)
+                            fen += fileSkips.ToString();
                     }
                     else
                     {

@@ -24,21 +24,21 @@ namespace Engine.Pieces
         public override List<Square> GetAttacks(Board board)
         {
             List<Square> attacks = new List<Square>();
-            char rank = this.Position.Rank;
-            char file = this.Position.File;
+            sbyte rank = this.Position.Rank;
+            sbyte file = this.Position.File;
             if (White)
             {
-                if (Square.IsInRange((char)(rank + 1), (char)(file - 1)) && (board.GetPiece((char)(rank + 1), (char)(file - 1)) != null) && (this.White != board.GetPiece((char)(rank + 1), (char)(file - 1)).White))
-                    attacks.Add(new Square((char)(rank + 1), (char)(file - 1)));
-                if (Square.IsInRange((char)(rank + 1), (char)(file + 1)) && (board.GetPiece((char)(rank + 1), (char)(file + 1)) != null) && (this.White != board.GetPiece((char)(rank + 1), (char)(file + 1)).White))
-                    attacks.Add(new Square((char)(rank + 1), (char)(file + 1)));
+                if (Square.IsInRange((sbyte)(rank + 1), (sbyte)(file - 1)) && (board.GetPiece((sbyte)(rank + 1), (sbyte)(file - 1)) != null) && (this.White != board.GetPiece((sbyte)(rank + 1), (sbyte)(file - 1)).White))
+                    attacks.Add(new Square((sbyte)(rank + 1), (sbyte)(file - 1)));
+                if (Square.IsInRange((sbyte)(rank + 1), (sbyte)(file + 1)) && (board.GetPiece((sbyte)(rank + 1), (sbyte)(file + 1)) != null) && (this.White != board.GetPiece((sbyte)(rank + 1), (sbyte)(file + 1)).White))
+                    attacks.Add(new Square((sbyte)(rank + 1), (sbyte)(file + 1)));
             }
             else
             {
-                if (Square.IsInRange((char)(rank - 1), (char)(file - 1)) && (board.GetPiece((char)(rank - 1), (char)(file - 1)) != null) && (this.White != board.GetPiece((char)(rank - 1), (char)(file - 1)).White))
-                    attacks.Add(new Square((char)(rank - 1), (char)(file - 1)));
-                if (Square.IsInRange((char)(rank - 1), (char)(file + 1)) && (board.GetPiece((char)(rank - 1), (char)(file + 1)) != null) && (this.White != board.GetPiece((char)(rank - 1), (char)(file + 1)).White))
-                    attacks.Add(new Square((char)(rank - 1), (char)(file + 1)));
+                if (Square.IsInRange((sbyte)(rank - 1), (sbyte)(file - 1)) && (board.GetPiece((sbyte)(rank - 1), (sbyte)(file - 1)) != null) && (this.White != board.GetPiece((sbyte)(rank - 1), (sbyte)(file - 1)).White))
+                    attacks.Add(new Square((sbyte)(rank - 1), (sbyte)(file - 1)));
+                if (Square.IsInRange((sbyte)(rank - 1), (sbyte)(file + 1)) && (board.GetPiece((sbyte)(rank - 1), (sbyte)(file + 1)) != null) && (this.White != board.GetPiece((sbyte)(rank - 1), (sbyte)(file + 1)).White))
+                    attacks.Add(new Square((sbyte)(rank - 1), (sbyte)(file + 1)));
             }
             return attacks;
         }

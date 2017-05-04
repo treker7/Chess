@@ -7,13 +7,13 @@ namespace Engine
     // IMMUTABLE CLASS
     public class Square
     {
-        public char File { get; }
-        public char Rank { get; }
+        public sbyte File { get; }
+        public sbyte Rank { get; }
 
-        public Square(char rank, char file)
+        public Square(sbyte rank, sbyte file)
         {
-            this.File = rank;
-            this.Rank = file;
+            this.Rank = rank;
+            this.File = file;            
         }
 
         public Square(string pgn)
@@ -21,8 +21,8 @@ namespace Engine
             if (pgn.Length != 2)
                 throw new ArgumentException("Invalid alebraic notation!");
 
-            char file = (char)(pgn[0] - 'a');
-            char rank = (char)(pgn[1] - '1');
+            sbyte file = (sbyte)(pgn[0] - 'a');
+            sbyte rank = (sbyte)(pgn[1] - '1');
 
             if ((rank < 0) || (rank > 7) || (file < 0) || (file > 7))
                 throw new ArgumentException("Invalid algebraic notation!");
@@ -31,9 +31,14 @@ namespace Engine
             this.Rank = rank;
         }
 
-        public static bool IsInRange(char rank, char file)
+        public static bool IsInRange(sbyte rank, sbyte file)
         {
-            return ((rank > -1) || (rank < 8) || (file > -1) || (file < 8));
+            return ((rank > -1) && (rank < 8) && (file > -1) && (file < 8));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (obj != null) ? (((Square)obj).File == this.File) && (((Square)obj).Rank == this.Rank) : false;            
         }
 
         public override string ToString()

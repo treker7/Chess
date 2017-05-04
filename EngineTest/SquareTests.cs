@@ -39,5 +39,13 @@ namespace Engine.Tests
                 Assert.Fail();
             }
         }
+
+        [TestMethod()]
+        public void IsInRangeTest()
+        {
+            Assert.IsTrue(Square.IsInRange(0, 7));
+            Assert.IsFalse(Square.IsInRange(1, 8));
+            Assert.IsFalse(Square.IsInRange(3, -1));
+        }
     }
 }
