@@ -87,6 +87,7 @@ namespace GUI
             else
                 userIsWhite = false;
 
+            this.Refresh();
             if (userIsWhite != chessBoard.WhiteMove)
                 DoEngineMove();
         }
@@ -133,7 +134,7 @@ namespace GUI
                     if (currPiece != null)
                     {
                         SolidBrush drawingBrush = currPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
-                        Point drawingPoint = new Point(col * squareSize, row * squareSize - 5);
+                        Point drawingPoint = userIsWhite ? new Point(col * squareSize, row * squareSize - 5) : new Point((7 - col) * squareSize, (7 - row) * squareSize - 5);
                         graphics.DrawString(currPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);
                     }
                 }
@@ -151,7 +152,12 @@ namespace GUI
             if (userIsWhite == chessBoard.WhiteMove)
             {
                 int squareSize = (BoardLength / BOARD_SIZE);
-                this.movingPieceFrom = new Square(e.Y / squareSize, e.X / squareSize);
+                int row = e.Y / squareSize;
+                int col = e.X / squareSize;
+                if (userIsWhite)
+                    movingPieceFrom = new Square(row, col);
+                else
+                    movingPieceFrom = new Square(7 - row, 7 - col);
 
                 movingPiecePos = new Point(e.X, e.Y);
                 movingPiece = drawBoard[movingPieceFrom.Row, movingPieceFrom.Col];
@@ -174,7 +180,13 @@ namespace GUI
             if (movingPiece != null)
             {
                 int squareSize = (BoardLength / BOARD_SIZE);
-                Square movingPieceTo = new Square(e.Y / squareSize, e.X / squareSize);
+                int row = e.Y / squareSize;
+                int col = e.X / squareSize;
+                Square movingPieceTo;
+                if (userIsWhite)
+                    movingPieceTo = new Square(row, col);
+                else
+                    movingPieceTo = new Square(7 - row, 7 - col);
 
                 Move potentialMove = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
                 if (Board.Move(chessBoard, potentialMove) != null) // legal move
