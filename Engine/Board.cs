@@ -176,31 +176,31 @@ namespace Engine
 
         internal Board Move(Move move)
         {
-            Board copyBoard = new Board(this);
-            Piece movedPiece = copyBoard.MovePiece(move);
-            copyBoard.whiteMove = !copyBoard.whiteMove;
+            Board newBoard = new Board(this);
+            Piece movedPiece = newBoard.MovePiece(move);
+            newBoard.whiteMove = !newBoard.whiteMove;
 
             if (movedPiece is King)
             {
                 if (movedPiece.White)
                 {
-                    copyBoard.whiteKing = (King)movedPiece;
+                    newBoard.whiteKing = (King)movedPiece;
                     if (move.Equals(new Move(new Square(0, 4), new Square(0, 6))))
-                        copyBoard.MovePiece(new Move(new Square(0, 7), new Square(0, 5)));
+                        newBoard.MovePiece(new Move(new Square(0, 7), new Square(0, 5)));
                     else if (move.Equals(new Move(new Square(0, 4), new Square(0, 2))))
-                        copyBoard.MovePiece(new Move(new Square(0, 0), new Square(0, 3)));
-                    copyBoard.castlingAvailability[CASTLE_WK] = false;
-                    copyBoard.castlingAvailability[CASTLE_WQ] = false;
+                        newBoard.MovePiece(new Move(new Square(0, 0), new Square(0, 3)));
+                    newBoard.castlingAvailability[CASTLE_WK] = false;
+                    newBoard.castlingAvailability[CASTLE_WQ] = false;
                 }
                 else
                 {
-                    copyBoard.blackKing = (King)movedPiece;
+                    newBoard.blackKing = (King)movedPiece;
                     if (move.Equals(new Move(new Square(7, 4), new Square(7, 6))))
-                        copyBoard.MovePiece(new Move(new Square(7, 7), new Square(7, 5)));
+                        newBoard.MovePiece(new Move(new Square(7, 7), new Square(7, 5)));
                     else if (move.Equals(new Move(new Square(7, 4), new Square(7, 2))))
-                        copyBoard.MovePiece(new Move(new Square(7, 0), new Square(7, 3)));
-                    copyBoard.castlingAvailability[CASTLE_BK] = false;
-                    copyBoard.castlingAvailability[CASTLE_BQ] = false;
+                        newBoard.MovePiece(new Move(new Square(7, 0), new Square(7, 3)));
+                    newBoard.castlingAvailability[CASTLE_BK] = false;
+                    newBoard.castlingAvailability[CASTLE_BQ] = false;
                 }
             }
             else if(movedPiece is Rook)
@@ -208,19 +208,26 @@ namespace Engine
                 if (movedPiece.White)
                 {
                     if(move.From.Equals(new Square(0, 7)))
-                        copyBoard.castlingAvailability[CASTLE_WK] = false;
+                        newBoard.castlingAvailability[CASTLE_WK] = false;
                     else if(move.From.Equals(new Square(0, 0)))
-                        copyBoard.castlingAvailability[CASTLE_WQ] = false;
+                        newBoard.castlingAvailability[CASTLE_WQ] = false;
                 }
                 else
                 {
                     if (move.From.Equals(new Square(7, 7)))
-                        copyBoard.castlingAvailability[CASTLE_BK] = false;
+                        newBoard.castlingAvailability[CASTLE_BK] = false;
                     else if (move.From.Equals(new Square(7, 0)))
-                        copyBoard.castlingAvailability[CASTLE_BQ] = false;
+                        newBoard.castlingAvailability[CASTLE_BQ] = false;
                 }
             }
-            return copyBoard;
+            else if(movedPiece is Pawn)
+            {
+                if ((movedPiece.White && (move.To.Rank == 7)) || (!movedPiece.White && (move.To.Rank == 0))) // pawn promotion
+                {                    
+                    newBoard.board[move.To.Rank, move.To.File] = new Queen(movedPiece.White, move.To);
+                }                
+            }
+            return newBoard;
         }
 
         private Piece MovePiece(Move move)
@@ -246,6 +253,11 @@ namespace Engine
             // mobility considerations
             eval += (.05 * (GetMovesOfSide(true).Count - GetMovesOfSide(false).Count));
             return eval;
+        }
+
+        public Piece GetPiece(Square square)
+        {
+            return board[square.Rank, square.File];
         }
 
         public Piece GetPiece(int rank, int file)

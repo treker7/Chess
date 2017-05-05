@@ -125,6 +125,11 @@ namespace Engine.Tests
             Assert.AreSame(null, Board.Move(checkBoard, new Move(new Square("c4"), new Square("c3"))));
             Assert.AreSame(null, Board.Move(checkBoard, new Move(new Square("f1"), new Square("c1"))));
             Assert.AreSame(null, Board.Move(checkBoard, new Move(new Square("g8"), new Square("g7"))));
+
+            // pawn promotion test
+            checkBoard = new Board("rnbqk2r/pppp2P1/5p2/1B2N2p/1b2n3/8/PPPP2PP/RNBQK2R w KQkq - 0 9");
+            checkBoard = Board.Move(checkBoard, new Move(new Square("g7"), new Square("g8")));
+            Assert.AreEqual("Q", checkBoard.GetPiece(new Square("g8")).ToString());
         }
 
         [TestMethod()]
