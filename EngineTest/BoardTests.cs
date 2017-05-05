@@ -87,5 +87,25 @@ namespace Engine.Tests
             Assert.IsTrue(checkBoard.Move(new Move(new Square("e2"), new Square("e4"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR "));
             Assert.IsTrue(checkBoard.Move(new Move(new Square("b1"), new Square("c3"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR "));
         }
+
+        [TestMethod()]
+        public void GetStatusTest()
+        {
+            // NORMAL TESTS
+            Board checkBoard = new Board();
+            Assert.AreEqual(Board.STATUS_NORMAL, checkBoard.GetStatus(false));
+            Assert.AreEqual(Board.STATUS_NORMAL, checkBoard.GetStatus(true));
+            checkBoard = new Board("rnbq3r/pppp1kpp/5n2/2b1p3/4P2N/8/PPPP1PPP/RNBQK2R b KQ - 1 5");
+            Assert.AreEqual(Board.STATUS_NORMAL, checkBoard.GetStatus(false));
+            Assert.AreEqual(Board.STATUS_NORMAL, checkBoard.GetStatus(true));
+
+            // CHECKMATE TESTS
+            checkBoard = new Board("rnbqk1nr/pp1p1Qpp/2p5/2b1p3/2B5/4P3/PPPP1PPP/RNB1K1NR b KQkq - 0 4");
+            Assert.AreEqual(Board.STATUS_CHECKMATE, checkBoard.GetStatus(false));
+
+            // STALEMATE TESTS
+            checkBoard = new Board("6k1/2R5/5Q2/8/7P/1P2P3/P4P1P/5KNR b - - 4 34");
+            Assert.AreEqual(Board.STATUS_STALEMATE, checkBoard.GetStatus(false));
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Engine
     public class Board
     {
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
+        public static readonly int STATUS_NORMAL = 0, STATUS_CHECK = 1, STATUS_CHECKMATE = 2, STATUS_STALEMATE = 3;
 
         private Piece[,] board = new Piece[8, 8];
         private King whiteKing, blackKing;
@@ -236,11 +237,6 @@ namespace Engine
             return attacksOfSide;
         }
 
-        public bool IsInCheck(bool isWhiteSide)
-        {
-            return GetAttacksOfSide(!isWhiteSide).Contains(GetKingOfSide(isWhiteSide).Position);
-        }
-
         public List<Move> GetMovesOfSide(bool isWhiteSide)
         {
             List<Move> moves = new List<Move>();
@@ -251,8 +247,39 @@ namespace Engine
             return moves;
         }
 
-        // ASCII representation of chess board
-        public string ToString2()
+        public bool IsInCheck(bool isWhiteSide)
+        {
+            return GetAttacksOfSide(!isWhiteSide).Contains(GetKingOfSide(isWhiteSide).Position);
+        }
+
+        public bool IsSurrounded(bool isWhiteSide)
+        {
+            return (GetMovesOfSide(isWhiteSide).Count == 0);
+        }
+
+        public int GetStatus(bool isWhiteSide)
+        {
+            bool isInCheck = this.IsInCheck(isWhiteSide);
+            bool isSurrounded = this.IsSurrounded(isWhiteSide);
+
+            if (isInCheck)
+            {
+                if (isSurrounded)
+                    return STATUS_CHECKMATE;
+                else
+                    return STATUS_CHECK;
+            }
+            else
+            {
+                if (isSurrounded)
+                    return STATUS_STALEMATE;
+                else
+                    return STATUS_NORMAL;
+            }
+        }
+
+            // ASCII representation of chess board
+            public string ToString2()
         {
             string ret = "";
             for (int rank = 7; rank > -1; rank--)
