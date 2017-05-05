@@ -6,12 +6,12 @@ namespace Engine.Pieces
 {
     class Pawn : Piece
     {
-        public static readonly double VALUE = 1.0;
+        public static readonly float VALUE = 1.0F;
 
         public Pawn(bool white, Square position) : base(white, position)
         { }
 
-        public override double GetValue()
+        public override float GetValue()
         {
             return Pawn.VALUE;
         }

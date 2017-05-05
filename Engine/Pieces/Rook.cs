@@ -6,12 +6,12 @@ namespace Engine.Pieces
 {
     class Rook : Piece
     {
-        public static readonly double VALUE = 5.0;
+        public static readonly float VALUE = 5.0F;
 
         public Rook(bool white, Square position) : base(white, position)
         { }
 
-        public override double GetValue()
+        public override float GetValue()
         {
             return Rook.VALUE;
         }

@@ -167,6 +167,7 @@ namespace Engine
             this.enPassantSquare = other.enPassantSquare;
         }
 
+        // checks the moves validity
         public static Board Move(Board board1, Move move)
         {
             Piece movingPiece = board1.GetPiece(move.From.Rank, move.From.File);
@@ -175,6 +176,7 @@ namespace Engine
             return board1.Move(move);
         }
 
+        // does not check the moves validity
         internal Board Move(Move move)
         {
             Board newBoard = new Board(this);
@@ -255,9 +257,9 @@ namespace Engine
         /*
          * The symmetric board evaluation function from white's perspective
          */
-        public double Eval()
+        public float Eval()
         {
-            double eval = 0.0;
+            float eval = 0.0F;
             // piece value considerations
             List<Piece> pieces = GetAllPieces();
             foreach (Piece piece in pieces)
@@ -265,7 +267,7 @@ namespace Engine
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
             // mobility considerations
-            eval += (.05 * (GetMovesOfSide(true).Count - GetMovesOfSide(false).Count));
+            eval += (.05F * (GetMovesOfSide(true).Count - GetMovesOfSide(false).Count));
             return eval;
         }
 

@@ -6,12 +6,12 @@ namespace Engine.Pieces
 {
     class Queen : Piece
     {
-        public static readonly double VALUE = 9.0;
+        public static readonly float VALUE = 9.0F;
 
         public Queen(bool white, Square position) : base(white, position)
         { }
 
-        public override double GetValue()
+        public override float GetValue()
         {
             return Queen.VALUE;
         }

@@ -36,6 +36,7 @@ namespace GUI
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chessBoard1.SetBoard(ChessBoard.START_FEN);
+            chessBoard1.NewGame();
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -48,6 +49,7 @@ namespace GUI
                 try
                 {
                     chessBoard1.SetBoard(fenStr);
+                    chessBoard1.NewGame();
                 }
                 catch (Exception ex)
                 {

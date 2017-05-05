@@ -25,14 +25,14 @@ namespace GUI
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
-        private bool flipped = false; // is the board turned around (i.e. is the user playing as black?)
+        private bool userIsWhite = true; // if the user is not playing as white, then we should flip the board 180 degrees
         
         private Piece[,] drawBoard = new Piece[8, 8];
         private Piece movingPiece;
         private Point movingPiecePos;
         private Square movingPieceFrom;
 
-        private Board chessBoard;     
+        private Board chessBoard;
 
         public ChessBoard()
         {
@@ -79,6 +79,25 @@ namespace GUI
             this.Refresh();
         }        
 
+        public void NewGame()
+        {
+            DialogResult playAsWhite = MessageBox.Show("Play as white?", "Play as white?", MessageBoxButtons.YesNo);
+            if (playAsWhite == DialogResult.Yes)
+                userIsWhite = true;
+            else
+                userIsWhite = false;
+
+            if (userIsWhite != chessBoard.WhiteMove)
+                DoEngineMove();
+        }
+
+        public void DoEngineMove()
+        {
+            Move engineMove = Engine.Engine.SearchMoves(chessBoard, 3);
+            this.chessBoard = Board.Move(chessBoard, engineMove);
+            this.SetBoard(chessBoard.ToString());
+        }
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             base.OnPaint(pe);
@@ -114,7 +133,7 @@ namespace GUI
                     if (currPiece != null)
                     {
                         SolidBrush drawingBrush = currPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
-                        Point drawingPoint = flipped ? new Point((7 - col) * squareSize, (7 - row) * squareSize - 5) : new Point(col * squareSize, row * squareSize - 5);
+                        Point drawingPoint = new Point(col * squareSize, row * squareSize - 5);
                         graphics.DrawString(currPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);
                     }
                 }
@@ -129,13 +148,16 @@ namespace GUI
 
         private void chessBoard1_MouseDown(object sender, MouseEventArgs e)
         {
-            int squareSize = (BoardLength / BOARD_SIZE);
-            this.movingPieceFrom = new Square(e.Y / squareSize, e.X / squareSize);
+            if (userIsWhite == chessBoard.WhiteMove)
+            {
+                int squareSize = (BoardLength / BOARD_SIZE);
+                this.movingPieceFrom = new Square(e.Y / squareSize, e.X / squareSize);
 
-            movingPiecePos = new Point(e.X, e.Y);
-            movingPiece = drawBoard[movingPieceFrom.Row, movingPieceFrom.Col];
-            drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = null;            
-            this.Refresh();            
+                movingPiecePos = new Point(e.X, e.Y);
+                movingPiece = drawBoard[movingPieceFrom.Row, movingPieceFrom.Col];
+                drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = null;
+                this.Refresh();
+            }
         }
 
         private void chessBoard1_MouseMove(object sender, MouseEventArgs e)
@@ -158,7 +180,8 @@ namespace GUI
                 if (Board.Move(chessBoard, potentialMove) != null) // legal move
                 {
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
-                    this.SetBoard(chessBoard.ToString());                    
+                    this.SetBoard(chessBoard.ToString());
+                    this.DoEngineMove();
                 }
                 else // illegal move
                 {

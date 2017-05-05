@@ -6,12 +6,12 @@ namespace Engine.Pieces
 {
     class Bishop : Piece
     {
-        public static readonly double VALUE = 3.0;
+        public static readonly float VALUE = 3.0F;
 
         public Bishop(bool white, Square position) : base(white, position)
         { }
 
-        public override double GetValue()
+        public override float GetValue()
         {
             return Bishop.VALUE;
         }
