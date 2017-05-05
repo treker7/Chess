@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GUI
 {
-    public class Square
+    internal struct Square
     {        
         public int Row { get; }
         public int Col { get; }

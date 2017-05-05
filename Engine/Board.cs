@@ -11,7 +11,6 @@ namespace Engine
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
 
         private Piece[,] board = new Piece[8, 8];
-        private List<Piece> pieces = new List<Piece>();
         private King whiteKing, blackKing;
 
         private bool whiteMove; // whose move is it?
@@ -50,32 +49,26 @@ namespace Engine
                     {
                         case 'p':
                             board[rank, file] = new Pawn(Char.IsUpper(symbol), new Square(rank, file));
-                            pieces.Add(board[rank, file]);
                             file++;
                             break;
                         case 'n':
                             board[rank, file] = new Knight(Char.IsUpper(symbol), new Square(rank, file));
-                            pieces.Add(board[rank, file]);
                             file++;
                             break;
                         case 'b':
                             board[rank, file] = new Bishop(Char.IsUpper(symbol), new Square(rank, file));
-                            pieces.Add(board[rank, file]);
                             file++;
                             break;
                         case 'r':
                             board[rank, file] = new Rook(Char.IsUpper(symbol), new Square(rank, file));
-                            pieces.Add(board[rank, file]);
                             file++;
                             break;
                         case 'q':
                             board[rank, file] = new Queen(Char.IsUpper(symbol), new Square(rank, file));
-                            pieces.Add(board[rank, file]);
                             file++;
                             break;
                         case 'k':
                             board[rank, file] = new King(Char.IsUpper(symbol), new Square(rank, file));
-                            pieces.Add(board[rank, file]);
                             if (Char.IsUpper(symbol))
                                 whiteKing = (King)board[rank, file];
                             else
@@ -149,14 +142,17 @@ namespace Engine
             {
                 for(int file = 0; file < 8; file++)
                 {
-                    this.board[rank, file] = (Piece)other.board[rank, file];
-                    this.pieces.Add(board[rank, file]);
-                    if(board[rank, file] is King)
+                    Piece piece = (Piece)other.board[rank, file];
+                    if (piece != null)
                     {
-                        if (board[rank, file].White)
-                            this.whiteKing = (King)board[rank, file];
-                        else
-                            this.blackKing = (King)board[rank, file];
+                        this.board[rank, file] = piece;
+                        if (board[rank, file] is King)
+                        {
+                            if (board[rank, file].White)
+                                this.whiteKing = (King)board[rank, file];
+                            else
+                                this.blackKing = (King)board[rank, file];
+                        }
                     }
                 }
             }
@@ -165,13 +161,24 @@ namespace Engine
             this.enPassantSquare = other.enPassantSquare;
         }
 
-        public Board Move(Square from, Square to)
+        public Board Move(Move move)
         {
-            Board copyBoard = new Board(this);            
-            copyBoard.board[to.Rank, to.File] = (copyBoard.board[from.Rank, from.File]).MoveTo(to);
-            copyBoard.board[from.Rank, from.File] = null;
+            Board copyBoard = new Board(this);
+            Piece movedPiece = (copyBoard.board[move.from.Rank, move.from.File]).MoveTo(move.to);
+
+            copyBoard.board[move.to.Rank, move.to.File] = movedPiece;
+            copyBoard.board[move.from.Rank, move.from.File] = null;
+
+            if (movedPiece is King)
+            {
+                if (movedPiece.White)
+                    copyBoard.whiteKing = (King)movedPiece;
+                else
+                    copyBoard.blackKing = (King)movedPiece;
+            }
+
             return copyBoard;
-        }               
+        }
 
         /*
          * The symmetric board evaluation function from white's perspective
@@ -179,6 +186,7 @@ namespace Engine
         public double Eval()
         {
             double eval = 0.0;
+            List<Piece> pieces = GetAllPieces();
             foreach (Piece piece in pieces)
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
@@ -186,25 +194,36 @@ namespace Engine
             return eval;
         }
 
-        internal Piece GetPiece(int rank, int file)
+        public Piece GetPiece(int rank, int file)
         {
             return board[rank, file];
         }
 
-        internal Piece GetKingOfSide(bool isWhiteSide)
+        public Piece GetKingOfSide(bool isWhiteSide)
         {
             return (isWhiteSide ? whiteKing : blackKing);
         }
-
+        
         internal List<Piece> GetPiecesOfSide(bool isWhiteSide)
         {
             List<Piece> piecesOfSide = new List<Piece>();
-            foreach (Piece piece in this.pieces)
+            for (int rank = 0; rank < 8; rank++)
             {
-                if (piece.White == isWhiteSide)
-                    piecesOfSide.Add(piece);
+                for (int file = 0; file < 8; file++)
+                {
+                    Piece piece = board[rank, file];
+                    if ((piece != null) && (piece.White == isWhiteSide))
+                        piecesOfSide.Add(piece);
+                }
             }
             return piecesOfSide;
+        }
+
+        internal List<Piece> GetAllPieces()
+        {
+            List<Piece> pieces = GetPiecesOfSide(true);
+            pieces.AddRange(GetPiecesOfSide(false));
+            return pieces;
         }
 
         internal List<Square> GetAttacksOfSide(bool isWhiteSide)
@@ -220,6 +239,16 @@ namespace Engine
         public bool IsInCheck(bool isWhiteSide)
         {
             return GetAttacksOfSide(!isWhiteSide).Contains(GetKingOfSide(isWhiteSide).Position);
+        }
+
+        public List<Move> GetMovesOfSide(bool isWhiteSide)
+        {
+            List<Move> moves = new List<Move>();
+            foreach (Piece piece in this.GetPiecesOfSide(isWhiteSide))
+            {
+                moves.AddRange(piece.GetMoves(this));
+            }
+            return moves;
         }
 
         // ASCII representation of chess board

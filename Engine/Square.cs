@@ -31,7 +31,7 @@ namespace Engine
             this.Rank = rank;
         }
 
-        public static bool IsInRange(sbyte rank, sbyte file)
+        public static bool IsInRange(int rank, int file)
         {
             return ((rank > -1) && (rank < 8) && (file > -1) && (file < 8));
         }

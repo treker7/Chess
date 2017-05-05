@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Engine
 {
     // IMMUTABLE CLASS
-    internal class Move
+    public class Move
     {
         public Square from { get; }
         public Square to { get; }
@@ -16,6 +16,17 @@ namespace Engine
         {
             this.from = from;
             this.to = to;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            else
+            {
+                Move other = (Move)obj;
+                return (this.from.Equals(other.from) && this.to.Equals(other.to));
+            }
         }
     }
 }

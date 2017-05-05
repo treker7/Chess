@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using Engine;
 
+
 namespace GUI
 {
     public partial class ChessBoard : Panel
@@ -24,11 +25,12 @@ namespace GUI
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
-        private bool flipped = false; // is the board turned around (i.e. the user is playing as black?)
+        private bool flipped = false; // is the board turned around (i.e. is the user playing as black?)
         
         private Piece[,] drawBoard = new Piece[8, 8];
         private Piece movingPiece;
         private Point movingPiecePos;
+        private Square movingPieceFrom;
 
         private Board chessBoard;     
 
@@ -77,7 +79,7 @@ namespace GUI
             this.Refresh();
         }
                 
-        public void DoMove(Square s1, Square s2)
+        internal void DoMove(Square s1, Square s2)
         {
             drawBoard[s2.Row, s2.Col] = drawBoard[s1.Row, s1.Col];
             drawBoard[s1.Row, s1.Col] = null;
@@ -135,11 +137,11 @@ namespace GUI
         private void chessBoard1_MouseDown(object sender, MouseEventArgs e)
         {
             int squareSize = (BoardLength / BOARD_SIZE);
-            Square location1 = new Square(e.Y / squareSize, e.X / squareSize);
+            this.movingPieceFrom = new Square(e.Y / squareSize, e.X / squareSize);
 
             movingPiecePos = new Point(e.X, e.Y);
-            movingPiece = drawBoard[location1.Row, location1.Col];
-            drawBoard[location1.Row, location1.Col] = null;            
+            movingPiece = drawBoard[movingPieceFrom.Row, movingPieceFrom.Col];
+            drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = null;            
             this.Refresh();            
         }
 
@@ -157,11 +159,23 @@ namespace GUI
             if (movingPiece != null)
             {
                 int squareSize = (BoardLength / BOARD_SIZE);
-                Square location2 = new Square(e.Y / squareSize, e.X / squareSize);
+                Square movingPieceTo = new Square(e.Y / squareSize, e.X / squareSize);
 
-                drawBoard[location2.Row, location2.Col] = movingPiece;
-                movingPiece = null;
-                this.Refresh();
+                Move move = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
+                if (chessBoard.GetMovesOfSide(movingPiece.isWhite).Contains(move))
+                {
+                    drawBoard[movingPieceTo.Row, movingPieceTo.Col] = movingPiece;
+                    movingPiece = null;
+
+                    this.chessBoard = chessBoard.Move(move);
+                    this.Refresh();
+                }
+                else
+                {
+                    drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = movingPiece;
+                    movingPiece = null;
+                    this.Refresh();
+                }    
             }
         }
 

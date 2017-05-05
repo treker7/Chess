@@ -28,11 +28,10 @@ namespace Engine.Pieces
             sbyte file = this.Position.File;
 
             sbyte[,] deltas = { { +2, +1 }, { +2, -1 }, { -2, +1 }, { -2, -1 }, { +1, +2 }, { +1, -2 }, { -1, +2 }, { -1, -2 } };
-
             for(int d = 0; d < deltas.GetLength(0); d++)
             {
-                sbyte testRank = deltas[d, 0];
-                sbyte testFile = deltas[d, 1];
+                sbyte testRank = (sbyte)(rank + deltas[d, 0]);
+                sbyte testFile = (sbyte)(file + deltas[d, 1]);
                 if (Square.IsInRange(testRank, testFile) && ((board.GetPiece(testRank, testFile) == null) || (this.White != board.GetPiece(testRank, testFile).White)))
                 {
                     attacks.Add(new Square(testRank, testFile));

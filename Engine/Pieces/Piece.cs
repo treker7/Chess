@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Engine
 {
     // IMMUTABLE CLASS
-    internal abstract class Piece
+    public abstract class Piece
     {
         public Square Position { get; }
         public bool White { get; }        
@@ -19,6 +19,19 @@ namespace Engine
         public abstract Piece MoveTo(Square to);
         public abstract List<Square> GetAttacks(Board board);
         public abstract override string ToString();
+
+        public virtual List<Move> GetMoves(Board board)
+        {
+            List<Move> moves = new List<Move>();
+            foreach(Square to in this.GetAttacks(board))
+            {
+                Move potentialMove = new Move(this.Position, to);
+                Board newBoard = board.Move(potentialMove);
+                if (!newBoard.IsInCheck(this.White))
+                    moves.Add(potentialMove);
+            }
+            return moves;
+        }
 
         // returns the attacks of a sliding piece (i.e. a rook, bishop, or queen) given movement direction vectors
         public List<Square> GetSliderAttacks(Board board, int[,] transVec)

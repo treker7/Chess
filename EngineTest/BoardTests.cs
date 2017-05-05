@@ -33,7 +33,7 @@ namespace Engine.Tests
         public void ToStringTest()
         {
             Board checkBoard = new Board();
-            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -", checkBoard.ToString());
+            Assert.AreEqual(Board.START_FEN, checkBoard.ToString());
 
             string checkBoardStr = "rnb1kbnr/pppp1ppp/8/4p3/4PP1q/8/PPPP2PP/RNBQKBNR w KQkq -";
             checkBoard = new Board(checkBoardStr);
@@ -62,6 +62,30 @@ namespace Engine.Tests
             checkBaord = new Board("rnbqk2r/pppp1Bpp/5n2/2b1p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 4");
             Assert.IsFalse(checkBaord.IsInCheck(true));
             Assert.IsTrue(checkBaord.IsInCheck(false));
+
+            //black in check
+            checkBaord = new Board("rnbq3r/pppp2pp/5nk1/2b1p3/4P2N/8/PPPP1PPP/RNBQK2R b KQ -");
+            Assert.IsFalse(checkBaord.IsInCheck(true));
+            Assert.IsTrue(checkBaord.IsInCheck(false));
+        }
+
+        [TestMethod()]
+        public void GetMovesOfSideTest()
+        {
+            Board checkBoard = new Board();
+            List<Move> firstMoves = new List<Move>();
+            Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("e2"), new Square("e4"))));
+            Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("e2"), new Square("e3"))));
+            Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("g1"), new Square("h3"))));
+            Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("g1"), new Square("f3"))));
+        }
+
+        [TestMethod()]
+        public void MoveTest()
+        {
+            Board checkBoard = new Board();
+            Assert.IsTrue(checkBoard.Move(new Move(new Square("e2"), new Square("e4"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR "));
+            Assert.IsTrue(checkBoard.Move(new Move(new Square("b1"), new Square("c3"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR "));
         }
     }
 }
