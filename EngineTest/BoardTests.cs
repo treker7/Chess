@@ -90,14 +90,34 @@ namespace Engine.Tests
             Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("e2"), new Square("e3"))));
             Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("g1"), new Square("h3"))));
             Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("g1"), new Square("f3"))));
+
+            // cannot move into check
+            checkBoard = new Board("rnbq3r/pppp1kpp/5n2/2b1p3/4P2N/8/PPPP1PPP/RNBQK2R b KQ - 1 5");
+            Assert.IsFalse(checkBoard.GetKingOfSide(false).GetMoves(checkBoard).Contains(new Move(new Square("f7"), new Square("g6"))));
+
+            checkBoard = new Board("rnbqkbnr/pppp1ppp/8/4p2Q/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 1 2");
+            Assert.IsFalse(checkBoard.GetMovesOfSide(false).Contains(new Move(new Square("f7"), new Square("f6"))));
+
+            // both sides CAN castle
+            checkBoard = new Board("rnbqk2r/pppp1ppp/5n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4");
+            Assert.IsTrue(checkBoard.GetKingOfSide(true).GetMoves(checkBoard).Contains(new Move(new Square("e1"), new Square("g1"))));
+            Assert.IsTrue(checkBoard.GetKingOfSide(false).GetMoves(checkBoard).Contains(new Move(new Square("e8"), new Square("g8"))));
+
+            // neither side can castle
+            checkBoard = new Board();
+            Assert.IsFalse(checkBoard.GetKingOfSide(true).GetMoves(checkBoard).Contains(new Move(new Square("e1"), new Square("g1"))));
+            Assert.IsFalse(checkBoard.GetKingOfSide(false).GetMoves(checkBoard).Contains(new Move(new Square("e8"), new Square("g8"))));
+            checkBoard = new Board("rnbqk2r/pppp2pp/5p2/2b1p2n/2B1P2N/5P2/PPPP2PP/RNBQK2R w KQkq - 0 6");
+            Assert.IsFalse(checkBoard.GetKingOfSide(true).GetMoves(checkBoard).Contains(new Move(new Square("e1"), new Square("g1"))));
+            Assert.IsFalse(checkBoard.GetKingOfSide(false).GetMoves(checkBoard).Contains(new Move(new Square("e8"), new Square("g8"))));
         }
 
         [TestMethod()]
         public void MoveTest()
         {
             Board checkBoard = new Board();
-            Assert.IsTrue(checkBoard.Move(new Move(new Square("e2"), new Square("e4"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR "));
-            Assert.IsTrue(checkBoard.Move(new Move(new Square("b1"), new Square("c3"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR "));
+            Assert.IsTrue(Board.Move(checkBoard, new Move(new Square("e2"), new Square("e4"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR "));
+            Assert.IsTrue(Board.Move(checkBoard, new Move(new Square("b1"), new Square("c3"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR "));
         }
 
         [TestMethod()]

@@ -77,14 +77,7 @@ namespace GUI
                 }
             }
             this.Refresh();
-        }
-                
-        internal void DoMove(Square s1, Square s2)
-        {
-            drawBoard[s2.Row, s2.Col] = drawBoard[s1.Row, s1.Col];
-            drawBoard[s1.Row, s1.Col] = null;
-            this.Refresh();
-        }
+        }        
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -162,15 +155,14 @@ namespace GUI
                 Square movingPieceTo = new Square(e.Y / squareSize, e.X / squareSize);
 
                 Move move = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
-                if ((chessBoard.WhiteMove == movingPiece.isWhite) && chessBoard.GetMovesOfSide(movingPiece.isWhite).Contains(move))
+                if (Board.Move(chessBoard, move) != null) // legal move
                 {
-                    drawBoard[movingPieceTo.Row, movingPieceTo.Col] = movingPiece;
+                    this.chessBoard = Board.Move(chessBoard, move);
+                    SetBoard(chessBoard.ToString());
                     movingPiece = null;
-
-                    this.chessBoard = chessBoard.Move(move);
                     this.Refresh();
                 }
-                else
+                else // illegal move
                 {
                     drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = movingPiece;
                     movingPiece = null;

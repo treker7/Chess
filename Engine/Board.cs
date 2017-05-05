@@ -166,7 +166,16 @@ namespace Engine
             this.enPassantSquare = other.enPassantSquare;
         }
 
-        public Board Move(Move move)
+        public static Board Move(Board board1, Move move)
+        {
+            Piece movingPiece = board1.GetPiece(move.From.Rank, move.From.File);
+            if ((movingPiece == null) || (movingPiece.White != board1.WhiteMove) || (!movingPiece.GetMoves(board1).Contains(move)))
+                return null;
+            Board board2 = new Board(board1);
+            return board2.Move(move);
+        }
+
+        internal Board Move(Move move)
         {
             Board copyBoard = new Board(this);
             Piece movedPiece = (this.board[move.From.Rank, move.From.File]).MoveTo(move.To);
