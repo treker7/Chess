@@ -158,16 +158,14 @@ namespace GUI
                 if (Board.Move(chessBoard, potentialMove) != null) // legal move
                 {
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
-                    SetBoard(chessBoard.ToString());
-                    movingPiece = null;
-                    this.Refresh();
+                    this.SetBoard(chessBoard.ToString());                    
                 }
                 else // illegal move
                 {
-                    drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = movingPiece;
-                    movingPiece = null;
-                    this.Refresh();
-                }    
+                    this.drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = movingPiece;                    
+                }
+                this.movingPiece = null;
+                this.Refresh();
             }
         }
 

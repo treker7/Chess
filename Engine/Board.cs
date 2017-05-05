@@ -186,33 +186,21 @@ namespace Engine
                 {
                     copyBoard.whiteKing = (King)movedPiece;
                     if (move.Equals(new Move(new Square(0, 4), new Square(0, 6))))
-                    {
                         copyBoard.MovePiece(new Move(new Square(0, 7), new Square(0, 5)));
-                        copyBoard.castlingAvailability[CASTLE_WK] = false;
-                        copyBoard.castlingAvailability[CASTLE_WQ] = false;
-                    }
                     else if (move.Equals(new Move(new Square(0, 4), new Square(0, 2))))
-                    {
                         copyBoard.MovePiece(new Move(new Square(0, 0), new Square(0, 3)));
-                        copyBoard.castlingAvailability[CASTLE_WK] = false;
-                        copyBoard.castlingAvailability[CASTLE_WQ] = false;
-                    }
+                    copyBoard.castlingAvailability[CASTLE_WK] = false;
+                    copyBoard.castlingAvailability[CASTLE_WQ] = false;
                 }
                 else
                 {
                     copyBoard.blackKing = (King)movedPiece;
                     if (move.Equals(new Move(new Square(7, 4), new Square(7, 6))))
-                    {
                         copyBoard.MovePiece(new Move(new Square(7, 7), new Square(7, 5)));
-                        copyBoard.castlingAvailability[CASTLE_BK] = false;
-                        copyBoard.castlingAvailability[CASTLE_BQ] = false;
-                    }
                     else if (move.Equals(new Move(new Square(7, 4), new Square(7, 2))))
-                    {
                         copyBoard.MovePiece(new Move(new Square(7, 0), new Square(7, 3)));
-                        copyBoard.castlingAvailability[CASTLE_BK] = false;
-                        copyBoard.castlingAvailability[CASTLE_BQ] = false;
-                    }
+                    copyBoard.castlingAvailability[CASTLE_BK] = false;
+                    copyBoard.castlingAvailability[CASTLE_BQ] = false;
                 }
             }
             else if(movedPiece is Rook)
