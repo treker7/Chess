@@ -18,7 +18,8 @@ namespace Engine
         private bool whiteMove = true;// whose move is it?
         public bool WhiteMove { get { return whiteMove; } }        
         private bool[] castlingAvailability = new bool[4]; // in order KQkq (white kingside, white queenside, black kingside, black queenside)
-        private Square enPassantSquare; // the en passant target square        
+        private Square enPassantSquare;
+        public Square EnPassantSquare { get { return enPassantSquare; } } // the en passant target square        
 
         public Board() : this(START_FEN)
         { }
@@ -222,11 +223,24 @@ namespace Engine
             }
             else if(movedPiece is Pawn)
             {
-                if ((movedPiece.White && (move.To.Rank == 7)) || (!movedPiece.White && (move.To.Rank == 0))) // pawn promotion
+                if (move.To.Equals(newBoard.EnPassantSquare)) // en passant capture
+                {
+                    if (movedPiece.White)
+                        newBoard.board[move.To.Rank - 1, move.To.File] = null;
+                    else
+                        newBoard.board[move.To.Rank + 1, move.To.File] = null;
+                }
+                else if ((move.To.Rank == 7) || (move.To.Rank == 0)) // pawn promotion
                 {                    
                     newBoard.board[move.To.Rank, move.To.File] = new Queen(movedPiece.White, move.To);
-                }                
+                }                               
             }
+            // update en passant target square                
+            if ((movedPiece is Pawn) && (Math.Abs(move.From.Rank - move.To.Rank) == 2))
+                newBoard.enPassantSquare = new Square((sbyte)(movedPiece.White ? (move.To.Rank - 1) : (move.To.Rank + 1)), move.To.File);
+            else
+                newBoard.enPassantSquare = null;
+
             return newBoard;
         }
 
@@ -402,10 +416,10 @@ namespace Engine
             if (castlingAvailability[CASTLE_BQ])
                 fen += "q";            
 
-            if (enPassantSquare == null)
+            if (EnPassantSquare == null)
                 fen += " -";
             else
-                fen += " " + enPassantSquare.ToString();
+                fen += " " + EnPassantSquare.ToString();
 
             return fen;
         }        

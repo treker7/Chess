@@ -94,9 +94,10 @@ namespace Engine.Tests
             // cannot move into check
             checkBoard = new Board("rnbq3r/pppp1kpp/5n2/2b1p3/4P2N/8/PPPP1PPP/RNBQK2R b KQ - 1 5");
             Assert.IsFalse(checkBoard.GetKingOfSide(false).GetMoves(checkBoard).Contains(new Move(new Square("f7"), new Square("g6"))));
-
             checkBoard = new Board("rnbqkbnr/pppp1ppp/8/4p2Q/8/4P3/PPPP1PPP/RNB1KBNR b KQkq - 1 2");
             Assert.IsFalse(checkBoard.GetMovesOfSide(false).Contains(new Move(new Square("f7"), new Square("f6"))));
+            checkBoard = new Board("rnbq1bnr/pppp1ppp/4k3/4p3/4P3/4K3/PPPP1PPP/RNBQ1BNR w - - 4 4");
+            Assert.IsFalse(checkBoard.GetKingOfSide(true).GetMoves(checkBoard).Contains(new Move(new Square("e3"), new Square("f4"))));
 
             // both sides CAN castle
             checkBoard = new Board("rnbqk2r/pppp1ppp/5n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4");
@@ -110,6 +111,14 @@ namespace Engine.Tests
             checkBoard = new Board("rnbqk2r/pppp2pp/5p2/2b1p2n/2B1P2N/5P2/PPPP2PP/RNBQK2R w KQkq - 0 6");
             Assert.IsFalse(checkBoard.GetKingOfSide(true).GetMoves(checkBoard).Contains(new Move(new Square("e1"), new Square("g1"))));
             Assert.IsFalse(checkBoard.GetKingOfSide(false).GetMoves(checkBoard).Contains(new Move(new Square("e8"), new Square("g8"))));
+
+            // en Passant test
+            checkBoard = new Board("rnbq2nr/ppppk1p1/B3p2p/4Pp2/8/b7/PPPPKPPP/RNBQ2NR w - f6 0 6"); // white en passant
+            Assert.IsTrue(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("e5"), new Square("f6"))));
+            Assert.IsFalse(checkBoard.GetMovesOfSide(false).Contains(new Move(new Square("e5"), new Square("f6"))));
+            checkBoard = new Board("rnbqkbnr/pppp1ppp/B7/8/4pP2/2N1P3/PPPP2PP/R1BQK1NR b KQkq f3 0 4"); // black en passant
+            Assert.IsTrue(checkBoard.GetMovesOfSide(false).Contains(new Move(new Square("e4"), new Square("f3"))));
+            Assert.IsFalse(checkBoard.GetMovesOfSide(true).Contains(new Move(new Square("e4"), new Square("f3"))));
         }
 
         [TestMethod()]
