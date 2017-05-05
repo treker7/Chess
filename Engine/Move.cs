@@ -9,13 +9,13 @@ namespace Engine
     // IMMUTABLE CLASS
     public class Move
     {
-        public Square from { get; }
-        public Square to { get; }
+        public Square From { get; }
+        public Square To { get; }
 
         public Move(Square from, Square to)
         {
-            this.from = from;
-            this.to = to;
+            this.From = from;
+            this.To = to;
         }
 
         public override bool Equals(object obj)
@@ -25,7 +25,7 @@ namespace Engine
             else
             {
                 Move other = (Move)obj;
-                return (this.from.Equals(other.from) && this.to.Equals(other.to));
+                return (this.From.Equals(other.From) && this.To.Equals(other.To));
             }
         }
     }

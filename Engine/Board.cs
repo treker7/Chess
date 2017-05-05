@@ -134,6 +134,9 @@ namespace Engine
             else
                 this.enPassantSquare = new Square(enPassant);
             #endregion            
+            // cannot be in check if it's not your move
+            if (this.IsInCheck(!this.whiteMove))
+                throw new ArgumentException("Illegal Check");
         }
 
         // copy constructor
@@ -166,10 +169,10 @@ namespace Engine
         public Board Move(Move move)
         {
             Board copyBoard = new Board(this);
-            Piece movedPiece = (this.board[move.from.Rank, move.from.File]).MoveTo(move.to);
+            Piece movedPiece = (this.board[move.From.Rank, move.From.File]).MoveTo(move.To);
 
-            copyBoard.board[move.to.Rank, move.to.File] = movedPiece;
-            copyBoard.board[move.from.Rank, move.from.File] = null;
+            copyBoard.board[move.To.Rank, move.To.File] = movedPiece;
+            copyBoard.board[move.From.Rank, move.From.File] = null;
             copyBoard.whiteMove = !this.whiteMove;
 
             if (movedPiece is King)
@@ -327,6 +330,9 @@ namespace Engine
                     fen += "/";
             }
             fen += WhiteMove ? " w " : " b ";
+
+            if (!castlingAvailability[CASTLE_WK] && !castlingAvailability[CASTLE_WQ] && !castlingAvailability[CASTLE_BK] && !castlingAvailability[CASTLE_BQ])
+                fen += "-";
             if (castlingAvailability[CASTLE_WK])
                 fen += "K";
             if (castlingAvailability[CASTLE_WQ])
@@ -334,7 +340,7 @@ namespace Engine
             if (castlingAvailability[CASTLE_BK])
                 fen += "k";
             if (castlingAvailability[CASTLE_BQ])
-                fen += "q";
+                fen += "q";            
 
             if (enPassantSquare == null)
                 fen += " -";

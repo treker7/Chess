@@ -30,12 +30,24 @@ namespace Engine.Tests
         }
 
         [TestMethod()]
+        [ExpectedException(typeof(ArgumentException))]
+        public void BoardTest3()
+        {
+            // cannot be in check if it's not your move
+            Board failBoard = new Board("rnbqkbnr/pppp2pp/5p2/4p2Q/3PP3/8/PPP2PPP/RNB1KBNR w KQkq - 1 3");
+        }
+
+        [TestMethod()]
         public void ToStringTest()
         {
             Board checkBoard = new Board();
             Assert.AreEqual(Board.START_FEN, checkBoard.ToString());
 
             string checkBoardStr = "rnb1kbnr/pppp1ppp/8/4p3/4PP1q/8/PPPP2PP/RNBQKBNR w KQkq -";
+            checkBoard = new Board(checkBoardStr);
+            Assert.AreEqual(checkBoardStr, checkBoard.ToString());
+
+            checkBoardStr = "rnb2rk1/p1p1q1pp/1p3p2/Q1bppN2/2BPPn2/5P2/PPP3PP/RNB2RK1 w - -";
             checkBoard = new Board(checkBoardStr);
             Assert.AreEqual(checkBoardStr, checkBoard.ToString());
         }
@@ -121,6 +133,6 @@ namespace Engine.Tests
 
             checkBoard = new Board("rn3rk1/pbpp1ppp/1p2qb2/8/8/5PP1/PPPP3P/RNBB1RKQ w - - 1 12");
             Assert.IsTrue(checkBoard.Eval() < 0);
-        }
+        }       
     }
 }
