@@ -162,7 +162,7 @@ namespace GUI
                 Square movingPieceTo = new Square(e.Y / squareSize, e.X / squareSize);
 
                 Move move = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
-                if (chessBoard.GetMovesOfSide(movingPiece.isWhite).Contains(move))
+                if ((chessBoard.WhiteMove == movingPiece.isWhite) && chessBoard.GetMovesOfSide(movingPiece.isWhite).Contains(move))
                 {
                     drawBoard[movingPieceTo.Row, movingPieceTo.Col] = movingPiece;
                     movingPiece = null;

@@ -46,6 +46,36 @@ namespace Engine.Pieces
             return attacks;
         }
 
+        public override List<Move> GetMoves(Board board)
+        {
+            List<Move> moves = base.GetMoves(board);
+
+            // check for castling           
+            if (board.GetCastlingAvailability(this.White ? Board.CASTLE_WK : Board.CASTLE_BK) && ClearCastle(board, true))
+                moves.Add(new Move(this.Position, new Square(this.Position.Rank, 6)));
+            if (board.GetCastlingAvailability(this.White ? Board.CASTLE_WQ : Board.CASTLE_BQ) && ClearCastle(board, false))
+                moves.Add(new Move(this.Position, new Square(this.Position.Rank, 2)));
+            
+            return moves;
+        }
+
+        private bool ClearCastle(Board board, bool kingSide)
+        {
+            int[] fileRanges;
+            if (kingSide)
+                fileRanges = new int[] { 4, 6 };
+            else
+                fileRanges = new int[] { 2, 4 };
+
+            List<Square> attacks = board.GetAttacksOfSide(!this.White);
+            for (int checkFile = fileRanges[0]; checkFile <= fileRanges[1]; checkFile++)
+            {
+                if (((checkFile != 4) && (board.GetPiece(this.Position.Rank, checkFile) != null)) || (attacks.Contains(new Square(this.Position.Rank, (sbyte)checkFile))))
+                    return false;
+            }
+            return true;
+        }
+
         public override string ToString()
         {
             return (this.White ? "K" : "k");

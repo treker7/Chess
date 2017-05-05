@@ -10,12 +10,13 @@ namespace Engine
     {
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
         public static readonly int STATUS_NORMAL = 0, STATUS_CHECK = 1, STATUS_CHECKMATE = 2, STATUS_STALEMATE = 3;
+        public static readonly int CASTLE_WK = 0, CASTLE_WQ = 1, CASTLE_BK = 2, CASTLE_BQ = 3;
 
         private Piece[,] board = new Piece[8, 8];
         private King whiteKing, blackKing;
 
-        private bool whiteMove; // whose move is it?
-        private static readonly int CASTLE_WK = 0, CASTLE_WQ = 1, CASTLE_BK = 2, CASTLE_BQ = 3;
+        private bool whiteMove = true;// whose move is it?
+        public bool WhiteMove { get { return whiteMove; } }        
         private bool[] castlingAvailability = new bool[4]; // in order KQkq (white kingside, white queenside, black kingside, black queenside)
         private Square enPassantSquare; // the en passant target square        
 
@@ -165,10 +166,11 @@ namespace Engine
         public Board Move(Move move)
         {
             Board copyBoard = new Board(this);
-            Piece movedPiece = (copyBoard.board[move.from.Rank, move.from.File]).MoveTo(move.to);
+            Piece movedPiece = (this.board[move.from.Rank, move.from.File]).MoveTo(move.to);
 
             copyBoard.board[move.to.Rank, move.to.File] = movedPiece;
             copyBoard.board[move.from.Rank, move.from.File] = null;
+            copyBoard.whiteMove = !this.whiteMove;
 
             if (movedPiece is King)
             {
@@ -177,10 +179,9 @@ namespace Engine
                 else
                     copyBoard.blackKing = (King)movedPiece;
             }
-
             return copyBoard;
         }
-
+        
         /*
          * The symmetric board evaluation function from white's perspective
          */
@@ -192,6 +193,7 @@ namespace Engine
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
+            eval += (.05 * (GetMovesOfSide(true).Count - GetMovesOfSide(false).Count));
             return eval;
         }
 
@@ -278,8 +280,13 @@ namespace Engine
             }
         }
 
-            // ASCII representation of chess board
-            public string ToString2()
+        internal bool GetCastlingAvailability(int i)
+        {
+            return this.castlingAvailability[i];
+        }
+
+        // ASCII representation of chess board
+        public string ToString2()
         {
             string ret = "";
             for (int rank = 7; rank > -1; rank--)
@@ -319,7 +326,7 @@ namespace Engine
                 if(rank != 0)
                     fen += "/";
             }
-            fen += whiteMove ? " w " : " b ";
+            fen += WhiteMove ? " w " : " b ";
             if (castlingAvailability[CASTLE_WK])
                 fen += "K";
             if (castlingAvailability[CASTLE_WQ])
