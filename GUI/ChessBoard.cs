@@ -154,10 +154,10 @@ namespace GUI
                 int squareSize = (BoardLength / BOARD_SIZE);
                 Square movingPieceTo = new Square(e.Y / squareSize, e.X / squareSize);
 
-                Move move = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
-                if (Board.Move(chessBoard, move) != null) // legal move
+                Move potentialMove = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
+                if (Board.Move(chessBoard, potentialMove) != null) // legal move
                 {
-                    this.chessBoard = Board.Move(chessBoard, move);
+                    this.chessBoard = Board.Move(chessBoard, potentialMove);
                     SetBoard(chessBoard.ToString());
                     movingPiece = null;
                     this.Refresh();

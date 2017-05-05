@@ -115,9 +115,16 @@ namespace Engine.Tests
         [TestMethod()]
         public void MoveTest()
         {
+            // legal moves
             Board checkBoard = new Board();
             Assert.IsTrue(Board.Move(checkBoard, new Move(new Square("e2"), new Square("e4"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR "));
             Assert.IsTrue(Board.Move(checkBoard, new Move(new Square("b1"), new Square("c3"))).ToString().StartsWith("rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR "));
+
+            // illegal moves
+            checkBoard = new Board("rnb2rk1/p1p1q3/1p2nppp/1Q1pPN2/1bB1P3/5PPP/PPP5/RNB2RK1 w - - 0 15");
+            Assert.AreSame(null, Board.Move(checkBoard, new Move(new Square("c4"), new Square("c3"))));
+            Assert.AreSame(null, Board.Move(checkBoard, new Move(new Square("f1"), new Square("c1"))));
+            Assert.AreSame(null, Board.Move(checkBoard, new Move(new Square("g8"), new Square("g7"))));
         }
 
         [TestMethod()]
@@ -153,6 +160,6 @@ namespace Engine.Tests
 
             checkBoard = new Board("rn3rk1/pbpp1ppp/1p2qb2/8/8/5PP1/PPPP3P/RNBB1RKQ w - - 1 12");
             Assert.IsTrue(checkBoard.Eval() < 0);
-        }       
+        }
     }
 }

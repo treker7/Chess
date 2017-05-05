@@ -171,40 +171,91 @@ namespace Engine
             Piece movingPiece = board1.GetPiece(move.From.Rank, move.From.File);
             if ((movingPiece == null) || (movingPiece.White != board1.WhiteMove) || (!movingPiece.GetMoves(board1).Contains(move)))
                 return null;
-            Board board2 = new Board(board1);
-            return board2.Move(move);
+            return board1.Move(move);
         }
 
         internal Board Move(Move move)
         {
             Board copyBoard = new Board(this);
-            Piece movedPiece = (this.board[move.From.Rank, move.From.File]).MoveTo(move.To);
-
-            copyBoard.board[move.To.Rank, move.To.File] = movedPiece;
-            copyBoard.board[move.From.Rank, move.From.File] = null;
-            copyBoard.whiteMove = !this.whiteMove;
+            Piece movedPiece = copyBoard.MovePiece(move);
+            copyBoard.whiteMove = !copyBoard.whiteMove;
 
             if (movedPiece is King)
             {
                 if (movedPiece.White)
+                {
                     copyBoard.whiteKing = (King)movedPiece;
+                    if (move.Equals(new Move(new Square(0, 4), new Square(0, 6))))
+                    {
+                        copyBoard.MovePiece(new Move(new Square(0, 7), new Square(0, 5)));
+                        copyBoard.castlingAvailability[CASTLE_WK] = false;
+                        copyBoard.castlingAvailability[CASTLE_WQ] = false;
+                    }
+                    else if (move.Equals(new Move(new Square(0, 4), new Square(0, 2))))
+                    {
+                        copyBoard.MovePiece(new Move(new Square(0, 0), new Square(0, 3)));
+                        copyBoard.castlingAvailability[CASTLE_WK] = false;
+                        copyBoard.castlingAvailability[CASTLE_WQ] = false;
+                    }
+                }
                 else
+                {
                     copyBoard.blackKing = (King)movedPiece;
+                    if (move.Equals(new Move(new Square(7, 4), new Square(7, 6))))
+                    {
+                        copyBoard.MovePiece(new Move(new Square(7, 7), new Square(7, 5)));
+                        copyBoard.castlingAvailability[CASTLE_BK] = false;
+                        copyBoard.castlingAvailability[CASTLE_BQ] = false;
+                    }
+                    else if (move.Equals(new Move(new Square(7, 4), new Square(7, 2))))
+                    {
+                        copyBoard.MovePiece(new Move(new Square(7, 0), new Square(7, 3)));
+                        copyBoard.castlingAvailability[CASTLE_BK] = false;
+                        copyBoard.castlingAvailability[CASTLE_BQ] = false;
+                    }
+                }
+            }
+            else if(movedPiece is Rook)
+            {
+                if (movedPiece.White)
+                {
+                    if(move.From.Equals(new Square(0, 7)))
+                        copyBoard.castlingAvailability[CASTLE_WK] = false;
+                    else if(move.From.Equals(new Square(0, 0)))
+                        copyBoard.castlingAvailability[CASTLE_WQ] = false;
+                }
+                else
+                {
+                    if (move.From.Equals(new Square(7, 7)))
+                        copyBoard.castlingAvailability[CASTLE_BK] = false;
+                    else if (move.From.Equals(new Square(7, 0)))
+                        copyBoard.castlingAvailability[CASTLE_BQ] = false;
+                }
             }
             return copyBoard;
         }
-        
+
+        private Piece MovePiece(Move move)
+        {
+            Piece movedPiece = (this.board[move.From.Rank, move.From.File]).MoveTo(move.To);
+            this.board[move.To.Rank, move.To.File] = movedPiece;
+            this.board[move.From.Rank, move.From.File] = null;
+            return movedPiece;
+        }
+
         /*
          * The symmetric board evaluation function from white's perspective
          */
         public double Eval()
         {
             double eval = 0.0;
+            // piece value considerations
             List<Piece> pieces = GetAllPieces();
             foreach (Piece piece in pieces)
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
+            // mobility considerations
             eval += (.05 * (GetMovesOfSide(true).Count - GetMovesOfSide(false).Count));
             return eval;
         }
