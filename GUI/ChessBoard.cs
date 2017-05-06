@@ -100,6 +100,15 @@ namespace GUI
                 this.chessBoard = Board.Move(chessBoard, engineMove);
                 this.SetBoard(chessBoard.ToString());
             }
+            int status = chessBoard.GetStatus(chessBoard.WhiteMove);
+            if(status == Board.STATUS_CHECKMATE)
+            {
+                MessageBox.Show(chessBoard.WhiteMove ? "White in checkmate!" : "Black in checkmate!");
+            }
+            else if(status == Board.STATUS_STALEMATE)
+            {
+                MessageBox.Show("Stalemate!");
+            }
         }
 
         protected override void OnPaint(PaintEventArgs pe)

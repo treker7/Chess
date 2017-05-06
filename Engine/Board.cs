@@ -11,6 +11,7 @@ namespace Engine
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
         public static readonly int STATUS_NORMAL = 0, STATUS_CHECK = 1, STATUS_CHECKMATE = 2, STATUS_STALEMATE = 3;
         public static readonly int CASTLE_WK = 0, CASTLE_WQ = 1, CASTLE_BK = 2, CASTLE_BQ = 3;
+        private static Random rand = new Random();
 
         private Piece[,] board = new Piece[8, 8];
         private King whiteKing, blackKing;
@@ -257,15 +258,16 @@ namespace Engine
         /*
          * The symmetric board evaluation function from white's perspective
          */
-        public float Eval()
+        public double Eval()
         {
-            float eval = 0.0F;
+            double eval = 0.0;
             // piece value considerations
             List<Piece> pieces = GetAllPieces();
             foreach (Piece piece in pieces)
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
+            eval += (rand.Next(2) == 1) ? (rand.NextDouble() / 8.0) : -(rand.NextDouble() / 8.0);
             return eval;
         }
 

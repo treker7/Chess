@@ -15,7 +15,7 @@ namespace Engine
             return SearchMovesAlphaBeta(board, depth, Int32.MinValue, Int32.MaxValue);
         }
 
-        private static Move SearchMovesAlphaBeta(Board board, int depth, float alpha, float beta)
+        private static Move SearchMovesAlphaBeta(Board board, int depth, double alpha, double beta)
         {
             List<Move> moves = board.GetMovesOfSide(board.WhiteMove);
             if (moves.Count == 0)
@@ -24,7 +24,7 @@ namespace Engine
             int bestBoardIndex = 0;
             for (int i = 0; i < moves.Count; i++)
             {
-                float currBoardEval;
+                double currBoardEval;
                 if (board.WhiteMove) // maximizing player
                 {
                     currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
@@ -51,7 +51,7 @@ namespace Engine
             return moves[bestBoardIndex];
         }
 
-        private static float AlphaBeta(Board board, int depth, float alpha, float beta)
+        private static double AlphaBeta(Board board, int depth, double alpha, double beta)
         {
             List<Move> moves = board.GetMovesOfSide(board.WhiteMove);
             if ((moves.Count == 0) && board.IsInCheck(board.WhiteMove)) // check mate for this player
@@ -69,7 +69,7 @@ namespace Engine
             
             for (int i = 0; i < moves.Count; i++)
             {
-                float currBoardEval;
+                double currBoardEval;
                 if (board.WhiteMove) // max node
                 {
                     currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);

@@ -1,0 +1,33 @@
+Performance Profiling with Visual Studio --- https://msdn.microsoft.com/en-us/library/ms182372.aspx
+
+Call Stack:
+	Engine Class:
+		Engine.SearchMoves() ->
+		Engine.SearchMovesAlphaBeta() ->
+		Engine.AlphaBeta() ->
+
+	Board Class:
+		GetMovesOfSide() ->
+	
+	Piece Class:
+		GetMoves() ->
+		GetAttacks() ->
+		
+	Board Class:
+		IsInCheck() ->
+		
+	Piece Class:
+		GetAttacks() ->
+		
+		
+		
+IsInCheck is called a lot... ugh.
+
+TODO:
+	Think about Optimizations.
+	Add an opening Book.
+	PGN?
+	UCI?
+	use primitive arrays instead of C# generics?
+	Switch to a bit board representation somehow?
+	
