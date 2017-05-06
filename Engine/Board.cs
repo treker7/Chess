@@ -266,8 +266,6 @@ namespace Engine
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
-            // mobility considerations
-            eval += (.05F * (GetMovesOfSide(true).Count - GetMovesOfSide(false).Count));
             return eval;
         }
 

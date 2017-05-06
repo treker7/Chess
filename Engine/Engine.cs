@@ -8,6 +8,8 @@ namespace Engine
 {
     public static class Engine
     {
+        public static readonly int MAX_DEPTH = 4;
+
         public static Move SearchMoves(Board board, int depth)
         {
             return SearchMovesAlphaBeta(board, depth, Int32.MinValue, Int32.MaxValue);

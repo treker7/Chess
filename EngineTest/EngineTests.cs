@@ -21,6 +21,8 @@ namespace Engine.Tests
             Assert.AreEqual(new Move("h1h8"), Engine.SearchMoves(testBoard, 1));
             testBoard = new Board("8/4R3/7p/6p1/6q1/5kP1/7P/4K2R w K - 0 1");
             Assert.AreEqual(new Move("e1g1"), Engine.SearchMoves(testBoard, 1));
+            testBoard = new Board("N1bq1b1r/3pkppp/1pp5/7Q/4P3/8/PPPP1PPP/RNB1KB1R w KQ - 0 1");
+            Assert.AreEqual(new Move("h5e5"), Engine.SearchMoves(testBoard, 1));
             testBoard = new Board("8/8/1P6/5n2/8/7k/6r1/7K b - - 0 1");
             Assert.AreEqual(new Move("f5g3"), Engine.SearchMoves(testBoard, 1));
             testBoard = new Board("5k2/6b1/8/8/1n6/p7/8/1KR5 b - - 0 1");

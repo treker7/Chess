@@ -165,14 +165,11 @@ namespace Engine.Tests
         public void EvalTest()
         {
             // white is winning
-            Board checkBoard = new Board("rnbq1bnr/ppp1k3/6Q1/3pN3/8/8/PPPP1PPP/RNB1KB1R w KQ - 0 8");
+            Board checkBoard = new Board("N1bq1b1r/3pkppp/1pp5/7Q/4P3/8/PPPP1PPP/RNB1KB1R w KQ - 0 1");
             Assert.IsTrue(checkBoard.Eval() > 0);
 
             // black is winning
             checkBoard = new Board("rnbqkbnr/pp1p2pp/8/8/8/2PBB2N/PP4PP/RN2K2R b KQ - 2 11");
-            Assert.IsTrue(checkBoard.Eval() < 0);
-
-            checkBoard = new Board("rn3rk1/pbpp1ppp/1p2qb2/8/8/5PP1/PPPP3P/RNBB1RKQ w - - 1 12");
             Assert.IsTrue(checkBoard.Eval() < 0);
         }
     }
