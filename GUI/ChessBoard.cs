@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Engine;
-
+using System.Threading;
 
 namespace GUI
 {
@@ -89,7 +89,7 @@ namespace GUI
 
             this.Refresh();
             if (userIsWhite != chessBoard.WhiteMove)
-                PlayEngineMove();
+                new Thread(new ThreadStart(this.PlayEngineMove)).Start();
         }
 
         public void PlayEngineMove()
@@ -196,7 +196,7 @@ namespace GUI
                 {
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
                     this.SetBoard(chessBoard.ToString());
-                    this.PlayEngineMove();
+                    new Thread(new ThreadStart(this.PlayEngineMove)).Start();
                 }
                 else // illegal move
                 {
