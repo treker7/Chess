@@ -18,6 +18,14 @@ namespace Engine
             this.To = to;
         }
 
+        public Move(string san) // standard algebraic notation string
+        {
+            if (san.Length != 4)
+                throw new ArgumentException("Illegal san string.");
+            this.From = new Square(san.Substring(0, 2));
+            this.To = new Square(san.Substring(2, 2));
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

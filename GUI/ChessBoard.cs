@@ -89,14 +89,17 @@ namespace GUI
 
             this.Refresh();
             if (userIsWhite != chessBoard.WhiteMove)
-                DoEngineMove();
+                PlayEngineMove();
         }
 
-        public void DoEngineMove()
+        public void PlayEngineMove()
         {
             Move engineMove = Engine.Engine.SearchMoves(chessBoard, 3);
-            this.chessBoard = Board.Move(chessBoard, engineMove);
-            this.SetBoard(chessBoard.ToString());
+            if (engineMove != null)
+            {
+                this.chessBoard = Board.Move(chessBoard, engineMove);
+                this.SetBoard(chessBoard.ToString());
+            }
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -193,7 +196,7 @@ namespace GUI
                 {
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
                     this.SetBoard(chessBoard.ToString());
-                    this.DoEngineMove();
+                    this.PlayEngineMove();
                 }
                 else // illegal move
                 {
