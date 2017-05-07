@@ -34,7 +34,8 @@ namespace GUI
         private Point movingPiecePos;
         private Square movingPieceFrom;
 
-        private Board chessBoard;        
+        private Board chessBoard;
+        private Thread engineThread;
 
         public ChessBoard()
         {
@@ -95,8 +96,12 @@ namespace GUI
                 userIsWhite = false;
 
             this.Invalidate();
-            if (userIsWhite != chessBoard.WhiteMove)
-                new Thread(new ThreadStart(this.PlayEngineMove)).Start();
+            if (userIsWhite != chessBoard.WhiteMove)            {
+
+                this.engineThread = new Thread(new ThreadStart(PlayEngineMove));
+                this.engineThread.Priority = ThreadPriority.Highest;
+                this.engineThread.Start();
+            }
         }
 
         public void PlayEngineMove()
@@ -106,6 +111,7 @@ namespace GUI
             {
                 this.chessBoard = Board.Move(chessBoard, engineMove);
                 this.SetBoard(chessBoard.ToString());
+                Invoke(new MethodInvoker(delegate () { boardChangedCallBack(chessBoard); }));         
             }
             int status = chessBoard.GetStatus(chessBoard.WhiteMove);
             if(status == Board.STATUS_CHECKMATE)
@@ -213,8 +219,9 @@ namespace GUI
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
                     this.SetBoard(chessBoard.ToString());
                     boardChangedCallBack(new Board(chessBoard));
-                    new Thread(new ThreadStart(this.PlayEngineMove)).Start();
-                    boardChangedCallBack(new Board(chessBoard));
+                    this.engineThread = new Thread(new ThreadStart(PlayEngineMove));
+                    this.engineThread.Priority = ThreadPriority.Highest;
+                    this.engineThread.Start();
                 }
                 else // illegal move
                 {
