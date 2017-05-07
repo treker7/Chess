@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
+    // IMMUTABLE CLASS
     public class Move
     {
         public Square From { get; }
         public Square To { get; }
-        public double Eval { get; set; }
 
         public Move(Square from, Square to)
         {

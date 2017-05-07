@@ -8,52 +8,43 @@ namespace Engine
 {
     public static class Engine
     {
-        public static readonly int MAX_DEPTH = 5;
+        public static readonly int MAX_DEPTH = 4;
 
         public static Move SearchMoves(Board board, int depth)
         {
             return SearchMovesAlphaBeta(board, depth, Int32.MinValue, Int32.MaxValue);
         }
 
-        private static Move SearchMovesAlphaBeta(Board board, int maxDepth, double alpha, double beta)
+        private static Move SearchMovesAlphaBeta(Board board, int depth, double alpha, double beta)
         {
             List<Move> moves = board.GetMovesOfSide(board.WhiteMove);
             if (moves.Count == 0)
                 return null;
 
             int bestBoardIndex = 0;
-            for (int currDepth = 1; currDepth <= maxDepth; currDepth++)
+            for (int i = 0; i < moves.Count; i++)
             {
-                for (int i = 0; i < moves.Count; i++)
+                double currBoardEval;
+                if (board.WhiteMove) // maximizing player
                 {
-                    double currBoardEval;
-                    if (board.WhiteMove) // maximizing player
+                    currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
+                    if (currBoardEval > alpha)
                     {
-                        currBoardEval = AlphaBeta(board.Move(moves[i]), currDepth - 1, alpha, beta);
-                        moves[i].Eval = currBoardEval;
-                        if (currBoardEval > alpha)
-                        {
-                            alpha = currBoardEval;
-                            bestBoardIndex = i;
-                        }
+                        alpha = currBoardEval;
+                        bestBoardIndex = i;
                     }
-                    else // minimizing player
-                    {
-                        currBoardEval = AlphaBeta(board.Move(moves[i]), currDepth - 1, alpha, beta);
-                        moves[i].Eval = currBoardEval;
-                        if (currBoardEval < beta)
-                        {
-                            beta = currBoardEval;
-                            bestBoardIndex = i;
-                        }
-                    }
-                    if (alpha >= beta) // prune
-                        break;
                 }
-                if (board.WhiteMove)
-                    moves.OrderBy(m => m.Eval).ToList();
-                else
-                    moves.OrderBy(m => -m.Eval).ToList();
+                else // minimizing player
+                {
+                    currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
+                    if (currBoardEval < beta)
+                    {
+                        beta = currBoardEval;
+                        bestBoardIndex = i;
+                    }                    
+                }
+                if (alpha >= beta) // prune
+                    break;
             }
             return moves[bestBoardIndex];
         }

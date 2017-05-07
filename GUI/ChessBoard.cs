@@ -106,7 +106,7 @@ namespace GUI
 
         public void PlayEngineMove()
         {
-            Move engineMove = Engine.Engine.SearchMoves(chessBoard, Engine.Engine.MAX_DEPTH - 1);
+            Move engineMove = Engine.Engine.SearchMoves(chessBoard, Engine.Engine.MAX_DEPTH);
             if (engineMove != null)
             {
                 this.chessBoard = Board.Move(chessBoard, engineMove);
