@@ -21,7 +21,8 @@ namespace GUI
         public Form1()
         {
             InitializeComponent();
-            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height);
+            this.ClientSize = new Size(chessBoard1.BoardLength, chessBoard1.BoardLength + menuStrip1.Height + panel1.Height);
+            chessBoard1.SetCallBack(this.updateTextBoxes);
 
             saveFileDialog1.Filter = fenFilter;
             saveFileDialog1.Title = "Save Game";
@@ -32,6 +33,12 @@ namespace GUI
             openFileDialog1.Title = "Open Game";
             openFileDialog1.RestoreDirectory = true;
         }        
+
+        private void updateTextBoxes(Engine.Board chessBoard)
+        {
+            fenBox.Text = chessBoard.ToString();
+            evalBox.Text = chessBoard.Eval().ToString();
+        }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {

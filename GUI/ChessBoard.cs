@@ -19,7 +19,9 @@ namespace GUI
         public static readonly string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
         private int boardLength = 600;
         public int BoardLength { get { return boardLength; } set { boardLength = value;  this.Invalidate(); } }
-        
+        public delegate void boardChanged(Board chessBoard); // callback function for when the chess board changes.
+        private boardChanged boardChangedCallBack;
+
         private readonly Font pieceFont = new Font("Arial Unicode MS", 42);
         private readonly Color blackSquare = Color.FromArgb(150, 150, 150);
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
@@ -32,7 +34,7 @@ namespace GUI
         private Point movingPiecePos;
         private Square movingPieceFrom;
 
-        private Board chessBoard;
+        private Board chessBoard;        
 
         public ChessBoard()
         {
@@ -79,6 +81,11 @@ namespace GUI
             this.Invalidate();
         }        
 
+        public void SetCallBack(boardChanged callBack)
+        {
+            this.boardChangedCallBack = callBack;
+        }
+
         public void NewGame()
         {
             DialogResult playAsWhite = MessageBox.Show("Play as white?", "Play as white?", MessageBoxButtons.YesNo);
@@ -109,6 +116,7 @@ namespace GUI
             {
                 MessageBox.Show("Stalemate!");
             }
+            boardChangedCallBack(chessBoard);
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -205,6 +213,7 @@ namespace GUI
                 {
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
                     this.SetBoard(chessBoard.ToString());
+                    boardChangedCallBack(chessBoard);
                     new Thread(new ThreadStart(this.PlayEngineMove)).Start();
                 }
                 else // illegal move
