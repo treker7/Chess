@@ -33,6 +33,10 @@ namespace Engine.Tests
             // mate in 2 puzzles
             testBoard = new Board("R4r1k/1p3qpp/8/8/8/1PQ5/1B3PPP/6K1 w - - 0 1"); // white to move
             Assert.AreEqual(new Move("c3g7"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("rnbq2kr/ppp3pp/4P2n/3p2NQ/4p3/B1P5/P1P2PPP/R3KB1R w - - 0 1");
+            Assert.AreEqual(new Move("h5f7"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("R1Q5/1p3p2/1k1qpb2/8/P2p4/P2P2P1/4rPK1/8 w - - 0 1");
+            Assert.AreEqual(new Move("a4a5"), Engine.SearchMoves(testBoard, 3));
             testBoard = new Board("4q1k1/6p1/4rp2/8/7Q/8/5PPP/3RR1K1 b - - 0 1"); // black to move
             Assert.AreEqual(new Move("e6e1"), Engine.SearchMoves(testBoard, 3));
         }

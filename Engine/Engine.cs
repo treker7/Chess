@@ -8,7 +8,7 @@ namespace Engine
 {
     public static class Engine
     {
-        public static readonly int MAX_DEPTH = 3;
+        public static readonly int MAX_DEPTH = 4;
 
         public static Move SearchMoves(Board board, int depth)
         {
@@ -33,8 +33,6 @@ namespace Engine
                         alpha = currBoardEval;
                         bestBoardIndex = i;
                     }
-                    if (alpha >= beta) // prune
-                        break;
                 }
                 else // minimizing player
                 {
@@ -43,26 +41,33 @@ namespace Engine
                     {
                         beta = currBoardEval;
                         bestBoardIndex = i;
-                    }
-                    if (alpha >= beta) // prune
-                        break;
+                    }                    
                 }
+                if (alpha >= beta) // prune
+                    break;
             }
             return moves[bestBoardIndex];
         }
 
         private static double AlphaBeta(Board board, int depth, double alpha, double beta)
         {
+            bool inCheck = board.IsInCheck(board.WhiteMove); // check for this player
+            // reached maximum search depth
+            if (!inCheck && (depth == 0))
+            {
+                return board.Eval();
+            }
+            // not yet reached maximum search depth
             List<Move> moves = board.GetMovesOfSide(board.WhiteMove);
-            if ((moves.Count == 0) && board.IsInCheck(board.WhiteMove)) // check mate for this player
+            if ((moves.Count == 0) && inCheck) // check mate for this player
             {
                 return board.WhiteMove ? (Int16.MinValue - depth) : (Int16.MaxValue + depth); // greater depth means we found mate sooner which is preferable
             }
             else if(moves.Count == 0) // stalemate
             {
-                return 0;
+                return board.WhiteMove ? -5: 5; // stalemate is only good if the side to move is currently losing 
             }
-            else if(depth == 0) // reached maximum depth
+            else if(depth == 0)
             {
                 return board.Eval();
             }
@@ -74,18 +79,16 @@ namespace Engine
                 {
                     currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
                     if (currBoardEval > alpha)
-                        alpha = currBoardEval;
-                    if (alpha >= beta) // prune
-                        break;
+                        alpha = currBoardEval;                    
                 }
                 else // min node
                 {
                     currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
                     if (currBoardEval < beta)
-                        beta = currBoardEval;
-                    if (alpha >= beta) // prune
-                        break;
+                        beta = currBoardEval;                    
                 }
+                if (alpha >= beta) // prune
+                    break;
             }
             return board.WhiteMove ? alpha : beta;
         }
