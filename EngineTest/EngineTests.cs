@@ -37,6 +37,14 @@ namespace Engine.Tests
             Assert.AreEqual(new Move("h5f7"), Engine.SearchMoves(testBoard, 3));
             testBoard = new Board("R1Q5/1p3p2/1k1qpb2/8/P2p4/P2P2P1/4rPK1/8 w - - 0 1");
             Assert.AreEqual(new Move("a4a5"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("r1bq2k1/ppp2r1p/2np1pNQ/2bNpp2/2B1P3/3P4/PPP2PPP/R3K2R w KQ - 0 1");
+            Assert.AreEqual(new Move("d5f6"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("r2q1k1r/ppp1n1Np/1bnpB2B/8/1P1pb1P1/2P4P/P4P2/R2Q1RK1 w - - 0 1");
+            Assert.AreEqual(new Move("g7h5"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("r4r2/pQ3ppp/2np4/2bk4/5P2/6P1/PPP5/R1B1KB1q w Q - 0 1");
+            Assert.AreEqual(new Move("b7b3"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("r1b1kbnr/pp2qp2/1np4p/4P3/2B2BpN/2NQ1pP1/PPP4P/2KR3R w kq - 0 1");
+            Assert.AreEqual(new Move("c4f7"), Engine.SearchMoves(testBoard, 3));
             testBoard = new Board("4q1k1/6p1/4rp2/8/7Q/8/5PPP/3RR1K1 b - - 0 1"); // black to move
             Assert.AreEqual(new Move("e6e1"), Engine.SearchMoves(testBoard, 3));
         }

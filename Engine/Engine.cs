@@ -27,7 +27,7 @@ namespace Engine
                 double currBoardEval;
                 if (board.WhiteMove) // maximizing player
                 {
-                    currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
+                    currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
                     if (currBoardEval > alpha)
                     {
                         alpha = currBoardEval;
@@ -36,7 +36,7 @@ namespace Engine
                 }
                 else // minimizing player
                 {
-                    currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
+                    currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
                     if (currBoardEval < beta)
                     {
                         beta = currBoardEval;
@@ -52,8 +52,8 @@ namespace Engine
         private static double AlphaBeta(Board board, int depth, double alpha, double beta)
         {
             bool inCheck = board.IsInCheck(board.WhiteMove); // check for this player
-            // reached maximum search depth
-            if (!inCheck && (depth == 0))
+            
+            if (!inCheck && (depth == 0)) // reached maximum search depth and not in check
             {
                 return board.Eval();
             }
@@ -67,9 +67,9 @@ namespace Engine
             {
                 return board.WhiteMove ? -5: 5; // stalemate is only good if the side to move is currently losing 
             }
-            else if(depth == 0)
+            else if(depth == 0) // reached maximum search depth and IS in check
             {
-                return board.Eval();
+                return board.WhiteMove ? (board.Eval() - .5) : (board.Eval() + .5); // being in check is generall a bad thing for the side to move
             }
             
             for (int i = 0; i < moves.Count; i++)
@@ -77,13 +77,13 @@ namespace Engine
                 double currBoardEval;
                 if (board.WhiteMove) // max node
                 {
-                    currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
+                    currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
                     if (currBoardEval > alpha)
                         alpha = currBoardEval;                    
                 }
                 else // min node
                 {
-                    currBoardEval = AlphaBeta(Board.Move(board, moves[i]), depth - 1, alpha, beta);
+                    currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
                     if (currBoardEval < beta)
                         beta = currBoardEval;                    
                 }
