@@ -47,6 +47,12 @@ namespace Engine.Tests
             Assert.AreEqual(new Move("c4f7"), Engine.SearchMoves(testBoard, 3));
             testBoard = new Board("4q1k1/6p1/4rp2/8/7Q/8/5PPP/3RR1K1 b - - 0 1"); // black to move
             Assert.AreEqual(new Move("e6e1"), Engine.SearchMoves(testBoard, 3));
+
+            // mate in 3 puzzles
+            testBoard = new Board("8/pk1B4/p7/2K1p3/8/8/4Q3/8 w - - 0 1");
+            Assert.AreEqual(new Move("d7h3"), Engine.SearchMoves(testBoard, 5));
+            testBoard = new Board("4r1b1/1p4B1/pN2pR2/RB2k3/1P2N2p/2p3b1/n2P1p1r/5K1n w - - 0 1");
+            Assert.AreEqual(new Move("f1e2"), Engine.SearchMoves(testBoard, 5));
         }
     }
 }
