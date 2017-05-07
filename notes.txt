@@ -34,4 +34,7 @@ TODO:
 	
 	
 https://chessprogramming.wikispaces.com/Board+Representation
+
+
+The git revert command undoes a committed snapshot. But, instead of removing the commit from the project history, it figures out how to undo the changes introduced by the commit and appends a new commit with the resulting content. This prevents Git from losing history, which is important for the integrity of your revision history and for reliable collaboration.
 	

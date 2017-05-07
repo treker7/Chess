@@ -96,8 +96,8 @@ namespace GUI
                 userIsWhite = false;
 
             this.Invalidate();
-            if (userIsWhite != chessBoard.WhiteMove)            {
-
+            if (userIsWhite != chessBoard.WhiteMove)
+            {
                 this.engineThread = new Thread(new ThreadStart(PlayEngineMove));
                 this.engineThread.Priority = ThreadPriority.Highest;
                 this.engineThread.Start();

@@ -267,7 +267,7 @@ namespace Engine
             {
                 eval += (piece.White ? piece.GetValue() : -piece.GetValue());
             }
-            eval += (rand.Next(2) == 1) ? (rand.NextDouble() / 20.0) : -(rand.NextDouble() / 20.0);
+            // eval += (rand.Next(2) == 1) ? (rand.NextDouble() / 20.0) : -(rand.NextDouble() / 20.0);
             return eval;
         }
 

@@ -9,6 +9,7 @@ namespace Engine
     public static class Engine
     {
         public static readonly int MAX_DEPTH = 4;
+        private static readonly int NUM_BEST_POTENTIAL_MOVES = 5;
 
         public static Move SearchMoves(Board board, int depth)
         {
@@ -20,6 +21,7 @@ namespace Engine
             List<Move> moves = board.GetMovesOfSide(board.WhiteMove);
             if (moves.Count == 0)
                 return null;
+
 
             int bestBoardIndex = 0;
             for (int i = 0; i < moves.Count; i++)
