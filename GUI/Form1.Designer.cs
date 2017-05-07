@@ -37,10 +37,10 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.evalBox = new System.Windows.Forms.Label();
+            this.fenBox = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.fenBox = new System.Windows.Forms.Label();
-            this.evalBox = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -113,6 +113,28 @@
             this.panel1.Size = new System.Drawing.Size(577, 79);
             this.panel1.TabIndex = 2;
             // 
+            // evalBox
+            // 
+            this.evalBox.AutoSize = true;
+            this.evalBox.BackColor = System.Drawing.Color.Silver;
+            this.evalBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.evalBox.Location = new System.Drawing.Point(74, 41);
+            this.evalBox.Name = "evalBox";
+            this.evalBox.Size = new System.Drawing.Size(28, 18);
+            this.evalBox.TabIndex = 3;
+            this.evalBox.Text = "0.0";
+            // 
+            // fenBox
+            // 
+            this.fenBox.AutoSize = true;
+            this.fenBox.BackColor = System.Drawing.Color.Silver;
+            this.fenBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fenBox.Location = new System.Drawing.Point(74, 11);
+            this.fenBox.Name = "fenBox";
+            this.fenBox.Size = new System.Drawing.Size(422, 18);
+            this.fenBox.TabIndex = 2;
+            this.fenBox.Text = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -132,28 +154,6 @@
             this.label1.Size = new System.Drawing.Size(49, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "FEN: ";
-            // 
-            // fenBox
-            // 
-            this.fenBox.AutoSize = true;
-            this.fenBox.BackColor = System.Drawing.Color.Silver;
-            this.fenBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fenBox.Location = new System.Drawing.Point(74, 11);
-            this.fenBox.Name = "fenBox";
-            this.fenBox.Size = new System.Drawing.Size(422, 18);
-            this.fenBox.TabIndex = 2;
-            this.fenBox.Text = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
-            // 
-            // evalBox
-            // 
-            this.evalBox.AutoSize = true;
-            this.evalBox.BackColor = System.Drawing.Color.Silver;
-            this.evalBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.evalBox.Location = new System.Drawing.Point(74, 41);
-            this.evalBox.Name = "evalBox";
-            this.evalBox.Size = new System.Drawing.Size(28, 18);
-            this.evalBox.TabIndex = 3;
-            this.evalBox.Text = "0.0";
             // 
             // Form1
             // 

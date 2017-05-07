@@ -116,7 +116,6 @@ namespace GUI
             {
                 MessageBox.Show("Stalemate!");
             }
-            boardChangedCallBack(chessBoard);
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -213,8 +212,9 @@ namespace GUI
                 {
                     this.chessBoard = Board.Move(chessBoard, potentialMove);
                     this.SetBoard(chessBoard.ToString());
-                    boardChangedCallBack(chessBoard);
+                    boardChangedCallBack(new Board(chessBoard));
                     new Thread(new ThreadStart(this.PlayEngineMove)).Start();
+                    boardChangedCallBack(new Board(chessBoard));
                 }
                 else // illegal move
                 {
