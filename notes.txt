@@ -31,3 +31,7 @@ TODO:
 	use primitive arrays instead of C# generics?
 	Switch to a bit board representation somehow?
 	
+	
+	
+https://chessprogramming.wikispaces.com/Board+Representation
+	
