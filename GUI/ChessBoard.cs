@@ -76,7 +76,7 @@ namespace GUI
                     }
                 }
             }
-            this.Refresh();
+            this.Invalidate();
         }        
 
         public void NewGame()
@@ -87,7 +87,7 @@ namespace GUI
             else
                 userIsWhite = false;
 
-            this.Refresh();
+            this.Invalidate();
             if (userIsWhite != chessBoard.WhiteMove)
                 new Thread(new ThreadStart(this.PlayEngineMove)).Start();
         }
@@ -174,7 +174,7 @@ namespace GUI
                 movingPiecePos = new Point(e.X, e.Y);
                 movingPiece = drawBoard[movingPieceFrom.Row, movingPieceFrom.Col];
                 drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = null;
-                this.Refresh();
+                this.Invalidate();
             }
         }
 
@@ -183,7 +183,7 @@ namespace GUI
             if (movingPiece != null)
             {
                 movingPiecePos = new Point(e.X, e.Y);
-                this.Refresh();
+                this.Invalidate();
             }
         }
 
@@ -212,7 +212,7 @@ namespace GUI
                     this.drawBoard[movingPieceFrom.Row, movingPieceFrom.Col] = movingPiece;                    
                 }
                 this.movingPiece = null;
-                this.Refresh();
+                this.Invalidate();
             }
         }
 
