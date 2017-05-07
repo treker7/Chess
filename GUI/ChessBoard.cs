@@ -106,7 +106,7 @@ namespace GUI
 
         public void PlayEngineMove()
         {
-            Move engineMove = Engine.Engine.SearchMoves(chessBoard, Engine.Engine.MAX_DEPTH - 1);
+            Move engineMove = Engine.Engine.SearchMoves(chessBoard, Engine.Engine.MAX_DEPTH);
             if (engineMove != null)
             {
                 this.chessBoard = Board.Move(chessBoard, engineMove);
@@ -164,11 +164,16 @@ namespace GUI
                     }
                 }
             }
-            if (movingPiece != null) // draw the moving piece
+            if (movingPiece != null) // draw the moving piece and darken the square it's moving from
             {
+                Rectangle rect = userIsWhite ? new Rectangle(movingPieceFrom.Col * squareSize, movingPieceFrom.Row * squareSize, squareSize, squareSize) : new Rectangle((7 - movingPieceFrom.Col) * squareSize, (7 - movingPieceFrom.Row) * squareSize, squareSize, squareSize);
+                float darkenFactor = .85F;
+                Color darkSquareCol = ((movingPieceFrom.Col + movingPieceFrom.Row) % 2 == 1) ? Color.FromArgb((Int32)(whiteSquare.R * darkenFactor), (Int32)(whiteSquare.G * darkenFactor), (Int32)(whiteSquare.B * darkenFactor)) : Color.FromArgb((Int32)(blackSquare.R * darkenFactor), (Int32)(blackSquare.G * darkenFactor), (Int32)(blackSquare.B * darkenFactor));
+                graphics.FillRectangle(new SolidBrush(darkSquareCol), rect);
+
                 SolidBrush drawingBrush = movingPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);
                 Point drawingPoint = new Point(movingPiecePos.X - 35, movingPiecePos.Y - 35);
-                graphics.DrawString(movingPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);               
+                graphics.DrawString(movingPiece.utfDrawStr, pieceFont, drawingBrush, drawingPoint);                
             }
         }
 
