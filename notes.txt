@@ -21,15 +21,13 @@ Call Stack:
 		
 		
 		
-IsInCheck is called a lot... ugh.
-
 TODO:
 	Think about Optimizations.
 	Add an opening Book.
-	PGN?
-	UCI?
-	use primitive arrays instead of C# generics?
-	Switch to a bit board representation somehow?
+	PGN (Portable Game Notation)
+	UCI (Universal Chess Interface)
+	Try primitive arrays instead of C# generics?
+	Try a bit board representation?
 	
 	
 	
