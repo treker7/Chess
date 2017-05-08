@@ -96,6 +96,7 @@ namespace GUI
                 userIsWhite = false;
 
             this.Invalidate();
+            boardChangedCallBack(chessBoard);
             if (userIsWhite != chessBoard.WhiteMove)
             {
                 this.engineThread = new Thread(new ThreadStart(PlayEngineMove));
@@ -109,8 +110,7 @@ namespace GUI
             Move engineMove = Engine.Engine.SearchMoves(chessBoard, Engine.Engine.MAX_DEPTH);
             if (engineMove != null)
             {
-                this.chessBoard = Board.Move(chessBoard, engineMove);
-                this.SetBoard(chessBoard.ToString());
+                this.SetBoard(Board.Move(chessBoard, engineMove).ToString());
                 Invoke(new MethodInvoker(delegate () { boardChangedCallBack(chessBoard); }));         
             }
             int status = chessBoard.GetStatus(chessBoard.WhiteMove);
@@ -221,9 +221,8 @@ namespace GUI
                 Move potentialMove = new Move(new Engine.Square((sbyte)(7 - movingPieceFrom.Row), (sbyte)movingPieceFrom.Col), new Engine.Square((sbyte)(7 - movingPieceTo.Row), (sbyte)movingPieceTo.Col));
                 if (Board.Move(chessBoard, potentialMove) != null) // legal move
                 {
-                    this.chessBoard = Board.Move(chessBoard, potentialMove);
-                    this.SetBoard(chessBoard.ToString());
-                    boardChangedCallBack(new Board(chessBoard));
+                    this.SetBoard(Board.Move(chessBoard, potentialMove).ToString());
+                    boardChangedCallBack(chessBoard);
                     this.engineThread = new Thread(new ThreadStart(PlayEngineMove));
                     this.engineThread.Priority = ThreadPriority.Highest;
                     this.engineThread.Start();
