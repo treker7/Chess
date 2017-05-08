@@ -1,0 +1,5 @@
+Our solution is organized into four projects:
+	1) GUI - the graphical user interface of our application; contains the solutions executable
+	2) Prompt - an input prompt to be used in future releases
+	3) Engine - the chess engine
+	4) EngineTest - unit tests for the Engine project
