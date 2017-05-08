@@ -42,31 +42,45 @@ namespace GUI
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            chessBoard1.SetBoard(ChessBoard.START_FEN);
-            chessBoard1.NewGame();
+            if (!chessBoard1.EngineThread.IsAlive)
+            {
+                chessBoard1.SetBoard(ChessBoard.START_FEN);
+                chessBoard1.NewGame();
+            }
+            else
+            {
+                MessageBox.Show("Wait for engine thread to finish.");
+            }
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (!chessBoard1.EngineThread.IsAlive)
             {
-                FileStream fs = (FileStream)openFileDialog1.OpenFile();
-                string fenStr = (new StreamReader(fs)).ReadToEnd();
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fs = (FileStream)openFileDialog1.OpenFile();
+                    string fenStr = (new StreamReader(fs)).ReadToEnd();
 
-                try
-                {
-                    chessBoard1.SetBoard(fenStr);
-                    chessBoard1.NewGame();
+                    try
+                    {
+                        chessBoard1.SetBoard(fenStr);
+                        chessBoard1.NewGame();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        fs.Close();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    fs.Close();
-                }
-            }                       
+            }
+            else
+            {
+                MessageBox.Show("Wait for engine thread to finish.");
+            }
         }
         
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)

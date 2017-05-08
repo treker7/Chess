@@ -36,6 +36,7 @@ namespace GUI
 
         private Board chessBoard;
         private Thread engineThread;
+        public Thread EngineThread { get { return engineThread; } }
 
         public ChessBoard()
         {

@@ -22,6 +22,7 @@ Call Stack:
 		
 		
 TODO:
+	Refactor ChessBoard.cs class. Think about threading issues.
 	Think about Optimizations.
 	Add an opening Book.
 	PGN (Portable Game Notation)
