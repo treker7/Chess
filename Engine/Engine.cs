@@ -73,8 +73,8 @@ namespace Engine
             {
                 return board.WhiteMove ? (board.Eval() - .5) : (board.Eval() + .5); // being in check is generall a bad thing for the side to move
             }
-            
-            for (int i = 0; i < moves.Count; i++)
+
+            for (int i = 0, moveCount = moves.Count; i < moveCount; i++)
             {
                 double currBoardEval;
                 if (board.WhiteMove) // max node
