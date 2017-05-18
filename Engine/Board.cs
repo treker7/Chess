@@ -265,9 +265,9 @@ namespace Engine
             List<Piece> pieces = GetAllPieces();
             foreach (Piece piece in pieces)
             {
-                eval += (piece.White ? piece.GetValue() : -piece.GetValue());
+                eval += (piece.White ? piece.GetValue(this) : -piece.GetValue(this));
             }
-            eval += (rand.Next(2) == 1) ? (rand.NextDouble() / 20.0) : -(rand.NextDouble() / 20.0);
+            eval += (rand.Next(2) == 1) ? (rand.NextDouble() / 100.0) : -(rand.NextDouble() / 100.0);
             return eval;
         }
 

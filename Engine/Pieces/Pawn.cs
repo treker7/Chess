@@ -11,9 +11,25 @@ namespace Engine.Pieces
         public Pawn(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue()
+        public override float GetValue(Board board)
         {
-            return Pawn.VALUE;
+            float value = Pawn.VALUE;
+
+            // positional considerations
+            // doubled pawns are bad?
+            // passed pawn are good?
+
+            // the value of a pawn increases as it neares the opponents side of the board
+            if(this.White && (this.Position.Rank >= 5))
+            {
+                value += (float)Math.Pow(3.0, this.Position.Rank - 5) - .66F; ;
+            }
+            else if(!this.White && (this.Position.Rank <= 2))
+            {
+                value += (float)Math.Pow(3.0, 2 - this.Position.Rank) - .66F;
+            }
+            
+            return value;
         }
 
         public override Piece MoveTo(Square to)

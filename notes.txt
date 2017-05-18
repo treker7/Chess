@@ -24,7 +24,7 @@ Call Stack:
 		
 		
 TODO:	
-	Enhance each Piece's GetValue() method.	
+	Store the board's moves with the board?
 	Refactor ChessBoard.cs class. Think about threading issues.
 	Think about IDDFS	
 	Think about Optimizations.
@@ -33,6 +33,7 @@ TODO:
 	UCI (Universal Chess Interface)
 	Try primitive arrays instead of C# generics?
 	Try a bit board representation?
+	Positional Play: Further Enhance each Piece's GetValue() method.
 
 Done:
 	Refactored Pawn.cs class GetMoves() method.

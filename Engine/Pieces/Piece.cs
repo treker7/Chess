@@ -7,7 +7,9 @@ namespace Engine
     public abstract class Piece
     {
         public Square Position { get; }
-        public bool White { get; }        
+        public bool White { get; }
+
+        public static readonly float MOBILITY_FACTOR = (1.0F / 4.0F); // the value of knights, bishops, and rooks can increase by at most this much depending upon how mobile they are
 
         public Piece(bool white, Square position)
         {
@@ -15,9 +17,9 @@ namespace Engine
             this.Position = position;
         }
 
-        public abstract float GetValue();
-        public abstract Piece MoveTo(Square to);
+        public abstract float GetValue(Board board);
         public abstract List<Square> GetAttacks(Board board);
+        public abstract Piece MoveTo(Square to);
         public abstract override string ToString();
 
         public virtual List<Move> GetMoves(Board board)

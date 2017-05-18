@@ -11,9 +11,11 @@ namespace Engine.Pieces
         public King(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue()
+        public override float GetValue(Board board)
         {
-            return King.VALUE;
+            float value = King.VALUE;
+
+            return value;
         }
 
         public override Piece MoveTo(Square to)

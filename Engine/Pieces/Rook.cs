@@ -8,12 +8,19 @@ namespace Engine.Pieces
     {
         public static readonly float VALUE = 5.0F;
 
+        private static readonly int MAX_NUM_ATTACKS = 14; // the maximum number of squares a rook can attack at once
+
         public Rook(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue()
+        public override float GetValue(Board board)
         {
-            return Rook.VALUE;
+            float value = Rook.VALUE;
+
+            // positional considerations
+            // rooks are more powerful when they can attack more squares
+            value += (this.GetAttacks(board).Count / (float)MAX_NUM_ATTACKS) * Piece.MOBILITY_FACTOR;
+            return value;
         }
 
         public override Piece MoveTo(Square to)
