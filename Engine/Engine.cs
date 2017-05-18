@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Engine.Pieces;
+
 namespace Engine
 {
     public static class Engine
@@ -13,7 +15,8 @@ namespace Engine
 
         public static Move SearchMoves(Board board, int depth)
         {
-            return SearchMovesAlphaBeta(board, depth, Int32.MinValue, Int32.MaxValue);
+            double eval = board.Eval();
+            return SearchMovesAlphaBeta(board, depth, eval - Queen.VALUE, eval + Queen.VALUE);
         }
 
         private static Move SearchMovesAlphaBeta(Board board, int depth, double alpha, double beta)

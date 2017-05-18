@@ -22,7 +22,12 @@ Call Stack:
 		
 		
 TODO:
+	Think about changing the initial values of alpha and beta in the initial call to AlphaBeta
 	Refactor ChessBoard.cs class. Think about threading issues.
+	Fix castling over own pieces bug.
+	Think about IDDFS
+	Enhance each Piece's GetValue() method.
+	Refactor Pawn.cs class GetMoves() method. There's duplicated code here.
 	Think about Optimizations.
 	Add an opening Book.
 	PGN (Portable Game Notation)

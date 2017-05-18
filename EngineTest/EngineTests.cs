@@ -47,6 +47,8 @@ namespace Engine.Tests
             Assert.AreEqual(new Move("c4f7"), Engine.SearchMoves(testBoard, 3));
             testBoard = new Board("4q1k1/6p1/4rp2/8/7Q/8/5PPP/3RR1K1 b - - 0 1"); // black to move
             Assert.AreEqual(new Move("e6e1"), Engine.SearchMoves(testBoard, 3));
+            testBoard = new Board("7r/3k1pp1/4p3/p3P3/2q5/K5Pp/7P/8 b - - 2 46");
+            Assert.AreEqual(new Move("h8b8"), Engine.SearchMoves(testBoard, 3));
 
             // mate in 3 puzzles
             testBoard = new Board("8/pk1B4/p7/2K1p3/8/8/4Q3/8 w - - 0 1");
