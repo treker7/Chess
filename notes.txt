@@ -1,3 +1,5 @@
+SearchMovesTest() Currently Executes in about 40 seconds
+
 Performance Profiling with Visual Studio --- https://msdn.microsoft.com/en-us/library/ms182372.aspx
 
 Call Stack:
@@ -21,21 +23,21 @@ Call Stack:
 		
 		
 		
-TODO:
-	Think about changing the initial values of alpha and beta in the initial call to AlphaBeta
+TODO:	
+	Enhance each Piece's GetValue() method.	
 	Refactor ChessBoard.cs class. Think about threading issues.
-	Fix castling over own pieces bug.
-	Think about IDDFS
-	Enhance each Piece's GetValue() method.
-	Refactor Pawn.cs class GetMoves() method. There's duplicated code here.
+	Think about IDDFS	
 	Think about Optimizations.
 	Add an opening Book.
 	PGN (Portable Game Notation)
 	UCI (Universal Chess Interface)
 	Try primitive arrays instead of C# generics?
 	Try a bit board representation?
-	
-	
+
+Done:
+	Refactored Pawn.cs class GetMoves() method.
+	Change the initial values of alpha and beta in the initial call to AlphaBeta
+	Castling over own pieces bug?
 	
 https://chessprogramming.wikispaces.com/Board+Representation
 

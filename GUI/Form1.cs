@@ -49,7 +49,7 @@ namespace GUI
             }
             else
             {
-                MessageBox.Show("Wait for engine thread to finish.");
+                MessageBox.Show("Wait for engine to finish calculating.");
             }
         }
 
@@ -79,7 +79,7 @@ namespace GUI
             }
             else
             {
-                MessageBox.Show("Wait for engine thread to finish.");
+                MessageBox.Show("Wait for engine to finish calculating.");
             }
         }
         

@@ -26,46 +26,32 @@ namespace Engine.Pieces
             List<Square> attacks = new List<Square>();
             sbyte rank = this.Position.Rank;
             sbyte file = this.Position.File;
-            if (White)
-            {
-                if (Square.IsInRange((rank + 1), (file - 1)) && ((board.GetPiece((rank + 1), (file - 1)) != null) && (this.White != board.GetPiece((rank + 1), (file - 1)).White)) || (((new Square((sbyte)(rank + 1), (sbyte)(file - 1)).Equals(board.EnPassantSquare)) && (this.White == board.WhiteMove))))
-                    attacks.Add(new Square((sbyte)(rank + 1), (sbyte)(file - 1)));
-                if (Square.IsInRange((rank + 1), (file + 1)) && ((board.GetPiece((rank + 1), (file + 1)) != null) && (this.White != board.GetPiece((rank + 1), (file + 1)).White)) || (((new Square((sbyte)(rank + 1), (sbyte)(file + 1)).Equals(board.EnPassantSquare)) && (this.White == board.WhiteMove))))
-                    attacks.Add(new Square((sbyte)(rank + 1), (sbyte)(file + 1)));                
-            }
-            else
-            {
-                if (Square.IsInRange((rank - 1), (file - 1)) && ((board.GetPiece((rank - 1), (file - 1)) != null) && (this.White != board.GetPiece((rank - 1), (file - 1)).White)) || (((new Square((sbyte)(rank - 1), (sbyte)(file - 1)).Equals(board.EnPassantSquare)) && (this.White == board.WhiteMove))))
-                    attacks.Add(new Square((sbyte)(rank - 1), (sbyte)(file - 1)));
-                if (Square.IsInRange((rank - 1), (file + 1)) && ((board.GetPiece((rank - 1), (file + 1)) != null) && (this.White != board.GetPiece((rank - 1), (file + 1)).White)) || (((new Square((sbyte)(rank - 1), (sbyte)(file + 1)).Equals(board.EnPassantSquare)) && (this.White == board.WhiteMove))))
-                    attacks.Add(new Square((sbyte)(rank - 1), (sbyte)(file + 1)));
-            }
+
+            sbyte checkRank = this.White ? (sbyte)(rank + 1) : (sbyte)(rank - 1);
+           
+            if (Square.IsInRange(checkRank, (file - 1)) && ((board.GetPiece(checkRank, (file - 1)) != null) && (this.White != board.GetPiece(checkRank, (file - 1)).White)) || (((new Square(checkRank, (sbyte)(file - 1)).Equals(board.EnPassantSquare)) && (this.White == board.WhiteMove))))
+                attacks.Add(new Square(checkRank, (sbyte)(file - 1)));
+            if (Square.IsInRange(checkRank, (file + 1)) && ((board.GetPiece(checkRank, (file + 1)) != null) && (this.White != board.GetPiece(checkRank, (file + 1)).White)) || (((new Square(checkRank, (sbyte)(file + 1)).Equals(board.EnPassantSquare)) && (this.White == board.WhiteMove))))
+                attacks.Add(new Square(checkRank, (sbyte)(file + 1)));      
+            
             return attacks;
         }
 
         public override List<Move> GetMoves(Board board)
         {
             List<Move> potentialMoves = base.GetMoves(board);
-
             sbyte rank = this.Position.Rank;
             sbyte file = this.Position.File;
-            if (this.White)
+
+            sbyte checkRank1 = this.White ? (sbyte)(rank + 1) : (sbyte)(rank - 1);
+            sbyte checkRank2 = this.White ? (sbyte)(rank + 2) : (sbyte)(rank - 2);
+            
+            if (Square.IsInRange(checkRank1, file) && (board.GetPiece(checkRank1, file) == null))
             {
-                if (Square.IsInRange(rank + 1, file) && (board.GetPiece(rank + 1, file) == null))
-                {
-                    potentialMoves.Add(new Move(this.Position, new Square((sbyte)(rank + 1), file)));
-                    if((rank == 1) && (board.GetPiece(rank + 2, file) == null)) // pawn can move ahead two ranks
-                         potentialMoves.Add(new Move(this.Position, new Square((sbyte)(rank + 2), file)));
-                }
-            }
-            else
-            {
-                if (Square.IsInRange(rank - 1, file) && (board.GetPiece(rank - 1, file) == null))
-                {
-                    potentialMoves.Add(new Move(this.Position, new Square((sbyte)(rank - 1), file)));
-                    if ((rank == 6) && (board.GetPiece(rank - 2, file) == null)) // pawn can move ahead two ranks
-                        potentialMoves.Add(new Move(this.Position, new Square((sbyte)(rank - 2), file)));
-                }
+                potentialMoves.Add(new Move(this.Position, new Square(checkRank1, file)));
+                bool isOnStartingRank = ((this.White && rank == 1) || (!this.White && rank == 6));
+                if (isOnStartingRank && (board.GetPiece(checkRank2, file) == null)) // pawn can move ahead two ranks
+                        potentialMoves.Add(new Move(this.Position, new Square(checkRank2, file)));
             }
 
             List<Move> moves = new List<Move>();
