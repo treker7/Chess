@@ -6,20 +6,32 @@ namespace Engine.Pieces
 {
     class Rook : Piece
     {
-        public static readonly float VALUE = 5.0F;
+        public static readonly int VALUE = 500;
 
-        private static readonly int MAX_NUM_ATTACKS = 14; // the maximum number of squares a rook can attack at once
+        // the relative values of squares for rooks to occupy (from white's perspective)
+        private static readonly int[,] positionalMatrix = {
+            { 0,  0,  0,  5,  5,  0,  0,  0 },
+            { -5,  0,  0,  0,  0,  0,  0, -5 },
+            { -5,  0,  0,  0,  0,  0,  0, -5 },
+            { -5,  0,  0,  0,  0,  0,  0, -5 },
+            { -5,  0,  0,  0,  0,  0,  0, -5 },
+            { -5,  0,  0,  0,  0,  0,  0, -5 },
+            { 5, 10, 10, 10, 10, 10, 10,  5 },
+            { 0,  0,  0,  0,  0,  0,  0,  0 }
+        };
 
         public Rook(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue(Board board)
+        public override int GetValue(Board board)
         {
-            float value = Rook.VALUE;
+            int value = Rook.VALUE;
+            // positional consideration          
+            if (this.White)
+                value += positionalMatrix[this.Position.Rank, this.Position.File];
+            else
+                value += positionalMatrix[(7 - this.Position.Rank), this.Position.File];
 
-            // positional considerations
-            // rooks are more powerful when they can attack more squares
-            value += (this.GetAttacks(board).Count / (float)MAX_NUM_ATTACKS) * Piece.MOBILITY_FACTOR;
             return value;
         }
 

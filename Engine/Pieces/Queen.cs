@@ -6,14 +6,26 @@ namespace Engine.Pieces
 {
     class Queen : Piece
     {
-        public static readonly float VALUE = 9.0F;
+        public static readonly int VALUE = 900;
+
+        // the relative values of squares for queens to occupy (from white's perspective)
+        private static readonly int[,] positionalMatrix = {
+            { -20,-10,-10, -5, -5,-10,-10,-20 },
+            { -10,  0,  5,  0,  0,  0,  0,-10 },
+            { -10,  5,  5,  5,  5,  5,  0,-10 },
+            { 0,  0,  5,  5,  5,  5,  0, -5 },
+            { -5,  0,  5,  5,  5,  5,  0, -5 },
+            { -10,  0,  5,  5,  5,  5,  0,-10 },
+            { -10,  0,  0,  0,  0,  0,  0,-10 },
+            { -20,-10,-10, -5, -5,-10,-10,-20 }
+        };
 
         public Queen(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue(Board board)
+        public override int GetValue(Board board)
         {
-            float value = Queen.VALUE;
+            int value = Queen.VALUE;
 
             return value;
         }

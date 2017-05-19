@@ -6,20 +6,32 @@ namespace Engine.Pieces
 {
     class Bishop : Piece
     {
-        public static readonly float VALUE = 3.0F;
+        public static readonly int VALUE = 330;
 
-        private static readonly int MAX_NUM_ATTACKS = 13; // the maximum number of squares a bishop can attack at once
+        // the relative values of squares for bishops to occupy (from white's perspective)
+        private static readonly int[,] positionalMatrix = {
+            { -20,-10,-10,-10,-10,-10,-10,-20 },
+            { -10,  5,  0,  0,  0,  0,  5,-10 },
+            { -10, 10, 10, 10, 10, 10, 10,-10 },
+            { -10,  0, 10, 10, 10, 10,  0,-10 },
+            { -10,  5,  5, 10, 10,  5,  5,-10 },
+            { -10,  0,  5, 10, 10,  5,  0,-10 },
+            { -10,  0,  0,  0,  0,  0,  0,-10 },
+            { -20,-10,-10,-10,-10,-10,-10,-20 }
+        };
 
         public Bishop(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue(Board board)
+        public override int GetValue(Board board)
         {
-            float value = Bishop.VALUE;
+            int value = Bishop.VALUE;
+            // positional consideration          
+            if (this.White)
+                value += positionalMatrix[this.Position.Rank, this.Position.File];
+            else
+                value += positionalMatrix[(7 - this.Position.Rank), this.Position.File];
 
-            // positional considerations
-            // bishops are more powerful when they can attack more squares
-            value += (this.GetAttacks(board).Count / (float)MAX_NUM_ATTACKS) * Piece.MOBILITY_FACTOR;
             return value;
         }
 

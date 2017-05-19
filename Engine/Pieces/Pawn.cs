@@ -6,29 +6,32 @@ namespace Engine.Pieces
 {
     class Pawn : Piece
     {
-        public static readonly float VALUE = 1.0F;
+        public static readonly int VALUE = 100;
+
+        // the relative values of squares for pawns to occupy (from white's perspective)
+        private static readonly int[,] positionalMatrix = {
+            { 0,  0,  0,  0,  0,  0,  0,  0 },
+            { 5, 10, 10,-20,-20, 10, 10, 5 },
+            { 5, -5,-10,  0,  0,-10, -5,  5 },
+            { 0,  0,  0, 20, 20,  0,  0,  0 },
+            { 5,  5, 10, 25, 25, 10,  5,  5 },
+            { 10, 10, 20, 30, 30, 20, 10, 10 },
+            { 50, 50, 50, 50, 50, 50, 50, 50},
+            { 0,  0,  0,  0,  0,  0,  0,  0 }
+        };
 
         public Pawn(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue(Board board)
+        public override int GetValue(Board board)
         {
-            float value = Pawn.VALUE;
+            int value = Pawn.VALUE;
+            // positional consideration          
+            if (this.White)
+                value += positionalMatrix[this.Position.Rank, this.Position.File];
+            else
+                value += positionalMatrix[(7 - this.Position.Rank), this.Position.File];
 
-            // positional considerations
-            // doubled pawns are bad?
-            // passed pawn are good?
-
-            // the value of a pawn increases as it neares the opponents side of the board
-            if(this.White && (this.Position.Rank >= 5))
-            {
-                value += (float)Math.Pow(3.0, this.Position.Rank - 5) - .66F; ;
-            }
-            else if(!this.White && (this.Position.Rank <= 2))
-            {
-                value += (float)Math.Pow(3.0, 2 - this.Position.Rank) - .66F;
-            }
-            
             return value;
         }
 

@@ -1,4 +1,4 @@
-SearchMovesTest() Currently Executes in about 40 seconds
+SearchMovesTest() Currently Executes in about 30 seconds
 
 Performance Profiling with Visual Studio --- https://msdn.microsoft.com/en-us/library/ms182372.aspx
 
@@ -24,8 +24,8 @@ Call Stack:
 		
 		
 TODO:	
-	Store the board's moves with the board?
 	Refactor ChessBoard.cs class. Think about threading issues.
+	Store the board's moves with the board?
 	Think about IDDFS	
 	Think about Optimizations.
 	Add an opening Book.

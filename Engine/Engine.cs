@@ -15,11 +15,11 @@ namespace Engine
 
         public static Move SearchMoves(Board board, int depth)
         {
-            double eval = board.Eval();
+            int eval = board.Eval();
             return SearchMovesAlphaBeta(board, depth, eval - Queen.VALUE, eval + Queen.VALUE);
         }
 
-        private static Move SearchMovesAlphaBeta(Board board, int depth, double alpha, double beta)
+        private static Move SearchMovesAlphaBeta(Board board, int depth, int alpha, int beta)
         {
             List<Move> moves = board.GetMovesOfSide(board.WhiteMove);
             if (moves.Count == 0)
@@ -29,7 +29,7 @@ namespace Engine
             int bestBoardIndex = 0;
             for (int i = 0; i < moves.Count; i++)
             {
-                double currBoardEval;
+                int currBoardEval;
                 if (board.WhiteMove) // maximizing player
                 {
                     currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);
@@ -54,7 +54,7 @@ namespace Engine
             return moves[bestBoardIndex];
         }
 
-        private static double AlphaBeta(Board board, int depth, double alpha, double beta)
+        private static int AlphaBeta(Board board, int depth, int alpha, int beta)
         {
             bool inCheck = board.IsInCheck(board.WhiteMove); // check for this player
             
@@ -74,12 +74,12 @@ namespace Engine
             }
             else if(depth == 0) // reached maximum search depth and IS in check
             {
-                return board.WhiteMove ? (board.Eval() - .5) : (board.Eval() + .5); // being in check is generall a bad thing for the side to move
+                return board.WhiteMove ? (board.Eval() - 50) : (board.Eval() + 50); // being in check is generall a bad thing for the side to move
             }
 
             for (int i = 0, moveCount = moves.Count; i < moveCount; i++)
             {
-                double currBoardEval;
+                int currBoardEval;
                 if (board.WhiteMove) // max node
                 {
                     currBoardEval = AlphaBeta(board.Move(moves[i]), depth - 1, alpha, beta);

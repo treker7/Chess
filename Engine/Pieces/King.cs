@@ -6,15 +6,15 @@ namespace Engine.Pieces
 {
     class King : Piece
     {
-        public static readonly float VALUE = Int16.MaxValue;
+        public static readonly int VALUE = Int32.MaxValue;
 
         public King(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue(Board board)
+        public override int GetValue(Board board)
         {
-            float value = King.VALUE;
-
+            int value = King.VALUE;
+            // positional considerations
             return value;
         }
 

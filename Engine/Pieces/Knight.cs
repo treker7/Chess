@@ -6,29 +6,32 @@ namespace Engine.Pieces
 {
     class Knight : Piece
     {
-        public static readonly float VALUE = 3.0F;
-        
-        private static readonly int[,] mobilityMatrix = {
-            { 2, 3, 4, 4, 4, 4, 3, 2 },
-            { 3, 4, 6, 6, 6, 6, 4, 3 },
-            { 4, 6, 8, 8, 8, 8, 6, 4 },
-            { 4, 6, 8, 8, 8, 8, 6, 4 },
-            { 4, 6, 8, 8, 8, 8, 6, 4 },
-            { 4, 6, 8, 8, 8, 8, 6, 4 },
-            { 3, 4, 6, 6, 6, 6, 4, 3 },
-            { 2, 3, 4, 4, 4, 4, 3, 2 }
+        public static readonly int VALUE = 320;
+
+        // the relative values of squares for knights to occupy (from white's perspective)
+        private static readonly int[,] positionalMatrix = {
+            { -50,-40,-30,-30,-30,-30,-40,-50 },
+            { -40,-20,  0,  5,  5,  0,-20,-40 },
+            { -30,  5, 10, 15, 15, 10,  5,-30 },
+            { -30,  0, 15, 20, 20, 15,  0,-30 },
+            { -30,  5, 15, 20, 20, 15,  5,-30 },
+            { -30,  0, 10, 15, 15, 10,  0,-30 },
+            { -40,-20,  0,  0,  0,  0,-20,-40 },
+            { -50,-40,-30,-30,-30,-30,-40,-50 }
         };
 
         public Knight(bool white, Square position) : base(white, position)
         { }
 
-        public override float GetValue(Board board)
+        public override int GetValue(Board board)
         {
-            float value = Knight.VALUE;
+            int value = Knight.VALUE;
+            // positional consideration          
+            if (this.White)
+                value += positionalMatrix[this.Position.Rank, this.Position.File];
+            else
+                value += positionalMatrix[(7 - this.Position.Rank), this.Position.File];
 
-            // positional considerations
-            // knights are more powerful when they are near the center of the board and can attack more squares
-            value += (mobilityMatrix[this.Position.Rank, this.Position.File] / 8.0F) * Piece.MOBILITY_FACTOR;
             return value;
         }
 

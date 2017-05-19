@@ -257,17 +257,19 @@ namespace Engine
 
         /*
          * The symmetric board evaluation function from white's perspective
+         * See: https://chessprogramming.wikispaces.com/Simplified+evaluation+function
          */
-        public double Eval()
+        public int Eval()
         {
-            double eval = 0.0;
+            int eval = 0;
             // piece value considerations
             List<Piece> pieces = GetAllPieces();
             foreach (Piece piece in pieces)
             {
                 eval += (piece.White ? piece.GetValue(this) : -piece.GetValue(this));
             }
-            eval += (rand.Next(2) == 1) ? (rand.NextDouble() / 100.0) : -(rand.NextDouble() / 100.0);
+            // Random element
+            eval += (rand.Next(2) == 1) ? rand.Next(5) : -rand.Next(5);
             return eval;
         }
 

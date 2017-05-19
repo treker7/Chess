@@ -37,7 +37,7 @@ namespace GUI
         private void updateTextBoxes(Engine.Board chessBoard)
         {
             fenBox.Text = chessBoard.ToString();
-            evalBox.Text = chessBoard.Eval().ToString();
+            evalBox.Text = (chessBoard.Eval() / 100.0).ToString();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)

@@ -17,7 +17,7 @@ namespace Engine
             this.Position = position;
         }
 
-        public abstract float GetValue(Board board);
+        public abstract int GetValue(Board board);
         public abstract List<Square> GetAttacks(Board board);
         public abstract Piece MoveTo(Square to);
         public abstract override string ToString();
