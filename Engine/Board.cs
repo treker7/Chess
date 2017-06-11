@@ -15,6 +15,8 @@ namespace Engine
 
         private Piece[,] board = new Piece[8, 8];
         private King whiteKing, blackKing;
+        //public List<Move> WhiteMoves = new List<Move>();
+        //public List<Move> BlackMoves = new List<Move>();
 
         private bool whiteMove = true;// whose move is it?
         public bool WhiteMove { get { return whiteMove; } }        

@@ -27,7 +27,7 @@ namespace GUI
         private readonly Color whiteSquare = Color.FromArgb(5, 150, 5);
         private readonly Color blackPieceColor = Color.Black;
         private readonly Color whitePieceColor = Color.FromArgb(204, 204, 50);
-        private bool userIsWhite = true; // if the user is not playing as white, then we should flip the board 180 degrees
+        private bool userIsWhite = true; // if the user is not playing as white, then we should flip the board around
         
         private Piece[,] drawBoard = new Piece[8, 8];
         private Piece movingPiece;
@@ -51,7 +51,7 @@ namespace GUI
         public void SetBoard(string fenStr)
         {
             this.chessBoard = new Board(fenStr);
-            this.drawBoard = new Piece[8, 8];
+            this.drawBoard = new Piece[BOARD_SIZE, BOARD_SIZE];
 
             string piecePositions = fenStr.Split(null)[0];            
             
@@ -151,12 +151,11 @@ namespace GUI
                 isWhiteSquare = (BOARD_SIZE % 2 == 0) ? !isWhiteSquare : isWhiteSquare;
             }
             // draw the chess pieces on the board
-            Piece currPiece;
             for (int row = 0; row < BOARD_SIZE; row++)
             {
                 for (int col = 0; col < BOARD_SIZE; col++)
                 {
-                    currPiece = drawBoard[row, col];
+                    Piece currPiece = drawBoard[row, col];
                     if (currPiece != null)
                     {
                         SolidBrush drawingBrush = currPiece.isWhite ? new SolidBrush(whitePieceColor) : new SolidBrush(blackPieceColor);

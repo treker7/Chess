@@ -8,9 +8,7 @@ namespace Engine
     {
         public Square Position { get; }
         public bool White { get; }
-
-        public static readonly float MOBILITY_FACTOR = (1.0F / 4.0F); // the value of knights, bishops, and rooks can increase by at most this much depending upon how mobile they are
-
+        
         public Piece(bool white, Square position)
         {
             this.White = white;

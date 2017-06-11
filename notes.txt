@@ -24,20 +24,19 @@ Call Stack:
 		
 		
 TODO:	
-	Refactor ChessBoard.cs class. Think about threading issues.
 	Store the board's moves with the board?
 	Think about IDDFS	
-	Think about Optimizations.
 	Add an opening Book.
 	PGN (Portable Game Notation)
 	UCI (Universal Chess Interface)
+	Refactor ChessBoard.cs class. Think about threading issues?
 	Try primitive arrays instead of C# generics?
 	Try a bit board representation?
 	Positional Play: Further Enhance each Piece's GetValue() method.
 
 Done:
 	Refactored Pawn.cs class GetMoves() method.
-	Change the initial values of alpha and beta in the initial call to AlphaBeta
+	Think about changing the initial values of alpha and beta in the initial call to AlphaBeta
 	Castling over own pieces bug?
 	
 https://chessprogramming.wikispaces.com/Board+Representation
